@@ -9,6 +9,8 @@
     "compile": "tsc --project tsconfig.json --noEmit",
     "build": "tsc",
     "postinstall": "npm run build",
+    "heroku-prebuild": "echo This runs before Heroku installs your dependencies",
+    "heroku-postbuild": "npm run build",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix"
   },

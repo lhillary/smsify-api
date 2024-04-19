@@ -5,7 +5,7 @@ import passport from "passport";
 
 /**
  * @swagger
- * /api/v1/campaigns/:
+ * /campaigns/:
  *  post:
  *    summary: Create a new campaign
  *    tags: [Campaign Management]
@@ -43,7 +43,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), createCampaig
 
 /**
  * @swagger
- * /api/v1/campaigns/:
+ * /campaigns/:
  *  get:
  *    summary: Retrieve all campaigns created by the user
  *    tags: [Campaign Management]
@@ -67,7 +67,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), getCampaigns);
 
 /**
  * @swagger
- * /api/v1/campaigns/update/{campaignId}:
+ * /update/{campaignId}:
  *  put:
  *    summary: Update a specific campaign
  *    tags: [Campaign Management]
@@ -107,7 +107,7 @@ router.put('/update/:campaignId', passport.authenticate('jwt', { session: false 
 
 /**
  * @swagger
- * /api/v1/campaigns/delete/{campaignId}:
+ * /delete/{campaignId}:
  *  put:
  *    summary: Delete a specific campaign
  *    tags: [Campaign Management]
