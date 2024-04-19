@@ -4,10 +4,11 @@
   "description": "Smsify's API",
   "main": "app.js",
   "scripts": {
-    "start": "node app.ts",
+    "start": "node build/app.js",
     "dev": "ts-node-dev --pretty --respawn --project tsconfig.json --log-error app.ts",
     "compile": "tsc --project tsconfig.json --noEmit",
     "build": "tsc",
+    "postinstall": "npm run build",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix"
   },
