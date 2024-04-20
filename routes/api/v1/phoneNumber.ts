@@ -5,7 +5,7 @@ import passport from "passport";
 
 /**
  * @swagger
- * /available-numbers:
+ * /api/v1/phone-number/available-numbers:
  *  get:
  *    summary: List available Twilio phone numbers
  *    tags: [Phone Number Management]
@@ -32,7 +32,7 @@ router.get('/available-numbers', passport.authenticate('jwt', { session: false }
 
 /**
  * @swagger
- * /purchase-number:
+ * /api/v1/phone-number/purchase-number:
  *  post:
  *    summary: Purchase and register a new phone number
  *    tags: [Phone Number Management]
@@ -70,7 +70,7 @@ router.post('/purchase-number', passport.authenticate('jwt', { session: false })
 
 /**
  * @swagger
- * /delete/{phoneNumberId}:
+ * /api/v1/phone-number/delete/{phoneNumberId}:
  *  put:
  *    summary: Deactivate a registered phone number
  *    tags: [Phone Number Management]

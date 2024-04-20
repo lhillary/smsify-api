@@ -14,7 +14,7 @@ const swaggerDefinition = {
     },
     servers: [
         {
-            url: 'http://localhost:3000/api/v1',
+            url: 'https://smsify-api-e90c6e0cdd2d.herokuapp.com/',
             description: 'Development server',
         },
     ],

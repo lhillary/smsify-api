@@ -18,7 +18,7 @@ export const sendBulkSMS = async (req: Request, res: Response): Promise<void> =>
                 body: messageContent,
                 to: contact.phoneNumber,
                 from: twilioNumber,
-                statusCallback: 'https://yourdomain.com/sms/status' // change this later
+                statusCallback: 'https://smsify-api-e90c6e0cdd2d.herokuapp.com/api/v1/sms/status' // change this later
             }).then(message => {
                 return Message.create({
                     campaignId,

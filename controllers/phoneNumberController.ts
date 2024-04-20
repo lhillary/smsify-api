@@ -22,8 +22,7 @@ export const purchasePhoneNumber = async (req: Request, res: Response) => {
         // Create the phone number in Twilio
         const purchasedNumber = await twilioClient.incomingPhoneNumbers.create({
             phoneNumber: phoneNumber, // This should be the full phone number including country code
-            voiceUrl: "http://example.com/voice", // Gonna have to change this later
-            smsUrl: "" // Gonna have to change this later
+            smsUrl: "https://smsify-api-e90c6e0cdd2d.herokuapp.com/api/v1/sms/receive" // Gonna have to change this later
         });
 
         // Store the new phone number in your database including the Twilio SID

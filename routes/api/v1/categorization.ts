@@ -5,7 +5,7 @@ import passport from "passport";
 
 /**
  * @swagger
- * /:
+ * /api/v1/category/:
  *  post:
  *    summary: Add new category to a campaign
  *    tags: [Category Management]
@@ -47,7 +47,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), addCategoriza
 
 /**
  * @swagger
- * /update/{categoryId}:
+ * /api/v1/category/update/{categoryId}:
  *  put:
  *    summary: Update an existing category
  *    tags: [Category Management]
@@ -84,7 +84,7 @@ router.put('/update/:categoryId', passport.authenticate('jwt', { session: false 
 
 /**
  * @swagger
- * /delete/{categoryId}:
+ * /api/v1/category/delete/{categoryId}:
  *  put:
  *    summary: Delete a category
  *    tags: [Category Management]

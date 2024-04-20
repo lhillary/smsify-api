@@ -7,7 +7,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /sendBulk:
+ * /api/v1/sms/sendBulk:
  *  post:
  *    summary: Send bulk SMS to all contacts in a campaign
  *    tags: [SMS]
@@ -43,7 +43,7 @@ router.post('/sendBulk', passport.authenticate('jwt', { session: false }), sendB
 
 /**
  * @swagger
- * /receive:
+ * /api/v1/sms/receive:
  *  post:
  *    summary: Receive incoming SMS responses
  *    tags: [SMS]
@@ -72,7 +72,7 @@ router.post('/receive', validateTwilioRequest, receiveSMS);
 
 /**
  * @swagger
- * /status:
+ * /api/v1/sms/status:
  *  post:
  *    summary: Handle message status updates from Twilio
  *    tags: [SMS]
@@ -99,7 +99,7 @@ router.post('/status', validateTwilioRequest, handleMessageStatus);
 
 /**
  * @swagger
- * /responses/{campaignId}:
+ * /api/v1/sms/responses/{campaignId}:
  *  get:
  *    summary: Fetch all responses for a specific campaign
  *    tags: [SMS]
@@ -130,7 +130,7 @@ router.get('/responses/:campaignId', passport.authenticate('jwt', { session: fal
 
 /**
  * @swagger
- * /messages/{campaignId}:
+ * /api/v1/sms/messages/{campaignId}:
  *  get:
  *    summary: Fetch all messages sent in a specific campaign
  *    tags: [SMS]
