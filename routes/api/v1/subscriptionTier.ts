@@ -6,7 +6,7 @@ import { isAdmin } from "../../../middlewares/authRoleChecker";
 
 /**
  * @swagger
- * /api/v1/tiers:
+ * /:
  *  post:
  *    summary: Create a new subscription tier
  *    tags: [Subscription Tiers]
@@ -44,7 +44,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), isAdmin, crea
 
 /**
  * @swagger
- * /api/v1/tiers:
+ * /:
  *  get:
  *    summary: Retrieve all subscription tiers
  *    tags: [Subscription Tiers]
@@ -66,7 +66,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), isAdmin, getTi
 
 /**
  * @swagger
- * /api/v1/tiers/update/{tierId}:
+ * /update/{tierId}:
  *  put:
  *    summary: Update a subscription tier
  *    tags: [Subscription Tiers]
@@ -105,7 +105,7 @@ router.put('/update/:tierId', passport.authenticate('jwt', { session: false }), 
 
 /**
  * @swagger
- * /api/v1/tiers/delete/{tierId}:
+ * /delete/{tierId}:
  *  delete:
  *    summary: Delete a subscription tier
  *    tags: [Subscription Tiers]

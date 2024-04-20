@@ -5,7 +5,7 @@ import { registerUser, loginUser, updateUser, deleteUser } from "../../../contro
 
 /**
  * @swagger
- * /api/v1/users/register:
+ * /register:
  *  post:
  *    summary: Register a new user
  *    tags: [Users]
@@ -47,7 +47,7 @@ router.post('/register', registerUser);
 
 /**
  * @swagger
- * /api/v1/users/login:
+ * /login:
  *  post:
  *    summary: Authenticate user and return JWT
  *    tags: [Users]
@@ -86,7 +86,7 @@ router.post('/login', loginUser);
 
 /**
  * @swagger
- * /api/v1/users/update:
+ * /update:
  *  put:
  *    summary: Update user information
  *    tags: [Users]
@@ -119,7 +119,7 @@ router.put('/update', passport.authenticate('jwt', { session: false }), updateUs
 
 /**
  * @swagger
- * /api/v1/users/delete:
+ * /delete:
  *  delete:
  *    summary: Delete a user
  *    tags: [Users]

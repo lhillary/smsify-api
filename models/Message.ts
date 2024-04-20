@@ -16,11 +16,11 @@ class Message {
      * @memberof Message
      */
     static async create(message: IMessage): Promise<IMessage> {
-        const { campaignId, contactId, messageContent } = message;
+        const { campaignId, contactId, messageContent, twilioSid, status } = message;
         const result = await pool.query(
-            `INSERT INTO messages (campaign_id, contact_id, message_content, status, sent_at)
-             VALUES ($1, $2, $3, $4, NOW()) RETURNING *;`,
-            [campaignId, contactId, messageContent, 'pending']
+            `INSERT INTO messages (campaign_id, contact_id, message_content, twilio_sid, status, sent_at)
+             VALUES ($1, $2, $3, $4, $5, NOW()) RETURNING *;`,
+            [campaignId, contactId, messageContent, twilioSid, status]
         );
         return result.rows[0] as IMessage;
     }

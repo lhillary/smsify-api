@@ -5,7 +5,7 @@ import passport from "passport";
 
 /**
  * @swagger
- * /campaigns/:
+ * /:
  *  post:
  *    summary: Create a new campaign
  *    tags: [Campaign Management]
@@ -43,7 +43,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), createCampaig
 
 /**
  * @swagger
- * /campaigns/:
+ * /:
  *  get:
  *    summary: Retrieve all campaigns created by the user
  *    tags: [Campaign Management]

@@ -5,7 +5,7 @@ import passport from "passport";
 
 /**
  * @swagger
- * /api/v1/contacts/:
+ * /:
  *  post:
  *    summary: Create a new contact
  *    tags: [Contact Management]
@@ -43,7 +43,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), createContact
 
 /**
  * @swagger
- * /api/v1/contacts/:
+ * /:
  *  get:
  *    summary: Retrieve all contacts
  *    tags: [Contact Management]
@@ -67,7 +67,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), getContacts);
 
 /**
  * @swagger
- * /api/v1/contacts/update/{contactId}:
+ * /update/{contactId}:
  *  put:
  *    summary: Update an existing contact
  *    tags: [Contact Management]
@@ -107,7 +107,7 @@ router.put('/update/:contactId', passport.authenticate('jwt', { session: false }
 
 /**
  * @swagger
- * /api/v1/contacts/delete/{contactId}:
+ * /delete/{contactId}:
  *  put:
  *    summary: Delete a contact
  *    tags: [Contact Management]
