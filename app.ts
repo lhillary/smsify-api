@@ -44,6 +44,10 @@ app.use('/api/v1/category', categorizationV1Routes);
 
 // Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.get('/swagger.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+});
 
 // Home route
 app.get('/', (req, res) => {
