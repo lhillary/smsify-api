@@ -8,9 +8,8 @@ const pool = new Pool({
     database: process.env.PGDATABASE,
     password: process.env.PGPASSWORD,
     port: parseInt(process.env.PGPORT as string, 10),
-    // Adding SSL config if you connect to a production database that requires SSL:
-    // ssl: {
-    //   rejectUnauthorized: false
-    // }
+    ssl: {
+      rejectUnauthorized: false
+    }
 });
 export default pool;
