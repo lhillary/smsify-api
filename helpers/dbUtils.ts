@@ -5,7 +5,7 @@
  * @return {*}  {*}
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function toCamelCase(obj: any): any {
+export function toCamelCase(obj: any): any {
     if (Array.isArray(obj)) {
         return obj.map(v => toCamelCase(v));
     } else if (obj != null && obj.constructor === Object) {
@@ -19,5 +19,3 @@ function toCamelCase(obj: any): any {
     }
     return obj;
 }
-
-export { toCamelCase };
