@@ -35,7 +35,7 @@ class User {
      */
     static async findByEmail(email: string): Promise<IUser | null> {
         const result = await pool.query(
-            `SELECT * FROM users WHERE email = $1 AND deleted_at IS NULL;;`,
+            `SELECT * FROM users WHERE email = $1 AND deleted_at IS NULL;`,
             [email]
         );
         if (result.rows.length > 0) {
@@ -56,7 +56,7 @@ class User {
      */
     static async findById(userId: number): Promise<IUser | null> {
         const result = await pool.query(
-            `SELECT * FROM users WHERE user_id = $1 AND deleted_at IS NULL;;`,
+            `SELECT * FROM users WHERE user_id = $1 AND deleted_at IS NULL;`,
             [userId]
         );
         if (result.rows.length > 0) {
