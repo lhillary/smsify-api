@@ -1,5 +1,6 @@
 import pool from '../config/db';
 import { UserUpdates, IUser } from '../types/interfaces';
+import { toCamelCase } from 'helpers/dbUtils';
 
 /**
  *
@@ -22,7 +23,7 @@ class User {
             `INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING *;`,
             [username, email, passwordHash]
         );
-        return newUser.rows[0] as IUser;
+        return toCamelCase(newUser.rows[0]) as IUser;
     }
 
     /**
@@ -39,7 +40,7 @@ class User {
             [email]
         );
         if (result.rows.length > 0) {
-            const user = result.rows[0] as IUser;
+            const user = toCamelCase(result.rows[0]) as IUser;
             return user;
         } else {
             return null;
@@ -60,7 +61,7 @@ class User {
             [userId]
         );
         if (result.rows.length > 0) {
-            const user = result.rows[0] as IUser;
+            const user = toCamelCase(result.rows[0]) as IUser;
             return user;
         } else {
             return null;
@@ -95,7 +96,7 @@ class User {
                 [userId, ...values]
             );
             if (result.rows.length > 0) {
-                return result.rows[0] as IUser;
+                return toCamelCase(result.rows[0]) as IUser;
             }
             return null;
         }

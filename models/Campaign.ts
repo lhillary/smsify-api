@@ -1,3 +1,4 @@
+import { toCamelCase } from 'helpers/dbUtils';
 import pool from '../config/db';
 import { ICampaign, CampaignUpdates } from '../types/interfaces';
 
@@ -55,7 +56,7 @@ class Campaign {
             `SELECT * FROM campaigns WHERE campaign_id = $1;`,
             [campaignId]
         );
-        return result.rows[0] as ICampaign;
+        return toCamelCase(result.rows[0]) as ICampaign;
     }
 
     /**
@@ -86,7 +87,7 @@ class Campaign {
                 [campaignId, ...values]
             );
             if (result.rows.length > 0) {
-                return result.rows[0] as ICampaign;
+                return toCamelCase(result.rows[0]) as ICampaign;
             }
             return null;
         }

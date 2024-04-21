@@ -1,3 +1,4 @@
+import { toCamelCase } from 'helpers/dbUtils';
 import pool from '../config/db';
 import { ISubscriptionTier } from '../types/interfaces';
 
@@ -22,7 +23,7 @@ class SubscriptionTier {
             `INSERT INTO subscription_tiers (tier_name, description, price) VALUES ($1, $2, $3) RETURNING *;`,
             [name, description, price]
         );
-        return result.rows[0] as ISubscriptionTier; 
+        return toCamelCase(result.rows[0]) as ISubscriptionTier; 
     }
 
     /**
@@ -47,7 +48,7 @@ class SubscriptionTier {
      */
     static async findById(tierId: number): Promise<ISubscriptionTier | null> {
         const result = await pool.query(`SELECT * FROM subscription_tiers WHERE tier_id = $1 AND deleted_at IS NULL;`, [tierId]);
-        return result.rows[0] as ISubscriptionTier;
+        return toCamelCase(result.rows[0]) as ISubscriptionTier;
     }
 
     /**
@@ -66,7 +67,7 @@ class SubscriptionTier {
             `UPDATE subscription_tiers SET tier_name = $2, description = $3, price = $4 WHERE tier_id = $1 AND deleted_at IS NULL RETURNING *;`,
             [tierId, name, description, price]
         );
-        return result.rows[0] as ISubscriptionTier;
+        return toCamelCase(result.rows[0]) as ISubscriptionTier;
     }
 
     /**

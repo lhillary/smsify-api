@@ -1,3 +1,4 @@
+import { toCamelCase } from 'helpers/dbUtils';
 import pool from '../config/db';
 import { IMessage } from 'types/interfaces';
 
@@ -22,7 +23,7 @@ class Message {
              VALUES ($1, $2, $3, $4, $5, NOW()) RETURNING *;`,
             [campaignId, contactId, messageContent, twilioSid, status]
         );
-        return result.rows[0] as IMessage;
+        return toCamelCase(result.rows[0]) as IMessage;
     }
 
     /**
@@ -39,7 +40,7 @@ class Message {
             [twilioSid]
         );
         if (result.rows.length > 0) {
-            return result.rows[0] as IMessage;
+            return toCamelCase(result.rows[0]) as IMessage;
         }
         return null;
     }

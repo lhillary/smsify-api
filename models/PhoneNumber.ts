@@ -1,3 +1,4 @@
+import { toCamelCase } from 'helpers/dbUtils';
 import pool from '../config/db';
 import { IPhoneNumber } from '../types/interfaces';
 
@@ -23,7 +24,7 @@ class PhoneNumber {
             `INSERT INTO phone_numbers (user_id, phone_number, country, twilio_sid, purchased_at) VALUES ($1, $2, $3, $4, NOW()) RETURNING *;`,
             [userId, phoneNumber, country, twilioSid]
         );
-        return result.rows[0] as IPhoneNumber;
+        return toCamelCase(result.rows[0]) as IPhoneNumber;
     }
 
     /**
@@ -41,7 +42,7 @@ class PhoneNumber {
             [phoneNumberId, userId]
         );
         if (result.rows.length > 0) {
-            return result.rows[0] as IPhoneNumber;
+            return toCamelCase(result.rows[0]) as IPhoneNumber;
         } else {
             return null;
         }
@@ -55,12 +56,12 @@ class PhoneNumber {
      * @return {*} 
      * @memberof PhoneNumber
      */
-    static async findByUserId(userId: number) {
+    static async findByUserId(userId: number): Promise<IPhoneNumber[]> {
         const phoneNumbers = await pool.query(
             `SELECT * FROM phone_numbers WHERE user_id = $1 AND deleted_at IS NULL;;`,
             [userId]
         );
-        return phoneNumbers.rows;
+        return phoneNumbers.rows as IPhoneNumber[];
     }
 
     /**
@@ -77,7 +78,7 @@ class PhoneNumber {
             `UPDATE phone_numbers SET is_active = false, deleted_at = NOW() WHERE phone_number_id = $1 AND user_id = $2 RETURNING *;`,
             [phoneNumberId, userId]
         );
-        return result.rows[0] as IPhoneNumber;
+        return toCamelCase(result.rows[0]) as IPhoneNumber;
     }
 }
 export default PhoneNumber;

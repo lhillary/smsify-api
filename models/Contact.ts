@@ -1,3 +1,4 @@
+import { toCamelCase } from 'helpers/dbUtils';
 import pool from '../config/db';
 import { IContact, ContactUpdates } from '../types/interfaces';
 
@@ -22,7 +23,7 @@ class Contact {
             `INSERT INTO contacts (user_id, name, phone_number) VALUES ($1, $2, $3) RETURNING *;`,
             [userId, name, phoneNumber]
         );
-        return newContact.rows[0] as IContact;
+        return toCamelCase(newContact.rows[0]) as IContact;
     }
 
     /**
@@ -87,7 +88,7 @@ class Contact {
                 [contactId, userId, ...values]
             );
             if (result.rows.length > 0) {
-                return result.rows[0] as IContact;
+                return toCamelCase(result.rows[0]) as IContact;
             }
             return null;
         }

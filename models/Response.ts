@@ -1,3 +1,4 @@
+import { toCamelCase } from 'helpers/dbUtils';
 import pool from '../config/db';
 import { IResponse } from 'types/interfaces';
 
@@ -22,7 +23,7 @@ class ResponseModel {
              VALUES ($1, $2, NOW()) RETURNING *;`,
             [messageId, responseContent]
         );
-        return result.rows[0] as IResponse;
+        return toCamelCase(result.rows[0]) as IResponse;
     }
 
     /**

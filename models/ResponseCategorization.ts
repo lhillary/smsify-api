@@ -1,5 +1,6 @@
 import { IResponseCategorization } from 'types/interfaces';
 import pool from '../config/db';
+import { toCamelCase } from 'helpers/dbUtils';
 
 /**
  *
@@ -22,7 +23,7 @@ class ResponseCategorization {
              VALUES ($1, $2) RETURNING *;`,
             [responseId, categoryId]
         );
-        return result.rows[0] as IResponseCategorization;
+        return toCamelCase(result.rows[0]) as IResponseCategorization;
     }
 }
 

@@ -1,5 +1,6 @@
 import { ICampaignCategory } from 'types/interfaces';
 import pool from '../config/db';
+import { toCamelCase } from 'helpers/dbUtils';
 
 /**
  *
@@ -57,7 +58,7 @@ class Categorization {
              WHERE category_id = $1 AND deleted_at IS NULL RETURNING *;`,
             [categoryId, newLabel]
         );
-        return result.rows[0] as ICampaignCategory;
+        return toCamelCase(result.rows[0]) as ICampaignCategory;
     }
 
     /**
@@ -74,7 +75,7 @@ class Categorization {
              WHERE category_id = $1 AND deleted_at IS NULL RETURNING *;`,
             [categoryId]
         );
-        return result.rows[0] as ICampaignCategory;
+        return toCamelCase(result.rows[0]) as ICampaignCategory;
     }
 }
 
