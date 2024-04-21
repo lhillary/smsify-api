@@ -1,6 +1,6 @@
 import { IResponseCategorization } from 'types/interfaces';
 import pool from '../config/db';
-import { toCamelCase } from 'helpers/dbUtils';
+import { toCamelCase } from '../helpers/dbUtils';
 
 /**
  *

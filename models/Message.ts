@@ -1,4 +1,4 @@
-import { toCamelCase } from 'helpers/dbUtils';
+import { toCamelCase } from '../helpers/dbUtils';
 import pool from '../config/db';
 import { IMessage } from 'types/interfaces';
 

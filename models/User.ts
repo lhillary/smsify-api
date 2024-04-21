@@ -1,6 +1,6 @@
 import pool from '../config/db';
 import { UserUpdates, IUser } from '../types/interfaces';
-import { toCamelCase } from 'helpers/dbUtils';
+import { toCamelCase } from '../helpers/dbUtils';
 
 /**
  *
