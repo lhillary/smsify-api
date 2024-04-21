@@ -19,6 +19,7 @@ export function initialize(passport: PassportStatic) {
     passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
         try {
             const user = await User.findByEmail(email);
+			console.log('LOGGING USER', user);
             if (!user) {
                 return done(null, false, { message: 'That email is not registered' });
             }
@@ -42,6 +43,7 @@ export function initialize(passport: PassportStatic) {
     }, async (jwt_payload, done) => {
         try {
             const user = await User.findById(jwt_payload.id);
+			console.log('LOGGING USER', user);
             if (user) {
                 return done(null, user);
             } else {
