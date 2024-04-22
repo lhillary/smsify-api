@@ -32,6 +32,22 @@ export const getCampaigns = async (req: Request, res: Response) => {
     }
 };
 
+export const getCampaignById = async (req: Request, res: Response) => {
+    const { campaignId } = req.params;
+
+    try {
+        const campaign = await Campaign.findById(parseInt(campaignId, 10));
+        if (!campaign) {
+            res.status(404).send("Campaign not found");
+        } else {
+            res.json(campaign);
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server error while retrieving campaign");
+    }
+};
+
 export const updateCampaign = async (req: Request, res: Response) => {
     const { campaignId } = req.params;
     const updates = req.body; 
@@ -41,7 +57,11 @@ export const updateCampaign = async (req: Request, res: Response) => {
             return res.status(400).json({ message: 'No update data provided' });
         }
         const updatedCampaign = await Campaign.update(parseInt(campaignId as string, 10), updates);
-        res.json(updatedCampaign);
+        if (!updatedCampaign) {
+            res.status(404).send("No campaign found or update failed");
+        } else {
+            res.status(200).json(updatedCampaign);
+        }
     } catch (error) {
         console.error(error);
         res.status(500).send("Server error while updating campaign");

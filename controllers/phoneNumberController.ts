@@ -3,8 +3,9 @@ import twilioClient from '../config/twilio';
 import { Request, Response } from "express";
 
 export const listAvailableNumbers = async (req: Request, res: Response) => {
+	const searchTerm = req.query.searchTerm as string;
     try {
-        const availableNumbers = await twilioClient.availablePhoneNumbers('US').local.list({limit: 10});
+        const availableNumbers = await twilioClient.availablePhoneNumbers('US').local.list({contains: searchTerm, limit: 20});
         res.json(availableNumbers);
     } catch (err) {
         console.error(err);
@@ -31,6 +32,20 @@ export const purchasePhoneNumber = async (req: Request, res: Response) => {
     } catch (err) {
         console.error("Failed to purchase phone number", err);
         res.status(500).send('Failed to purchase phone number');
+    }
+};
+
+export const getUserPhoneNumbers = async (req: Request, res: Response) => {
+    if (!req.user || !req.user.userId) {
+        res.status(401).send("Unauthorized");
+        return;
+    }
+    try {
+        const phoneNumbers = await PhoneNumber.findByUserId(req.user.userId);
+        res.json(phoneNumbers);
+    } catch (err) {
+        console.error("Error retrieving user's phone numbers:", err);
+        res.status(500).send('Error retrieving phone numbers');
     }
 };
 

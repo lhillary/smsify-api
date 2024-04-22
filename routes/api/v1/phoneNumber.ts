@@ -1,16 +1,23 @@
 import express from "express";
 const router = express.Router();
-import { deletePhoneNumber, listAvailableNumbers, purchasePhoneNumber } from "../../../controllers/phoneNumberController";
+import { deletePhoneNumber, getUserPhoneNumbers, listAvailableNumbers, purchasePhoneNumber } from "../../../controllers/phoneNumberController";
 import passport from "passport";
 
 /**
  * @swagger
  * /api/v1/phone-number/available-numbers:
  *  get:
- *    summary: List available Twilio phone numbers
+ *    summary: List available Twilio phone numbers that match the search criteria
  *    tags: [Phone Number Management]
  *    security:
  *      - jwt: []
+ *    parameters:
+ *      - in: query
+ *        name: searchTerm
+ *        required: false
+ *        schema:
+ *          type: string
+ *        description: Optional search term for filtering phone numbers (e.g., '510555')
  *    responses:
  *      200:
  *        description: List of available phone numbers from Twilio
@@ -67,6 +74,31 @@ router.get('/available-numbers', passport.authenticate('jwt', { session: false }
  *        description: Failed to purchase phone number
  */
 router.post('/purchase-number', passport.authenticate('jwt', { session: false }), purchasePhoneNumber);
+
+/**
+ * @swagger
+ * /api/v1/phone-number/user-numbers:
+ *  get:
+ *    summary: Retrieve all phone numbers associated with the authenticated user
+ *    tags: [Phone Number Management]
+ *    security:
+ *      - jwt: []
+ *    responses:
+ *      200:
+ *        description: List of phone numbers associated with the user
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/IPhoneNumber'
+ *      401:
+ *        description: Unauthorized
+ *      500:
+ *        description: Error retrieving user's phone numbers
+ */
+
+router.get('/user-numbers', passport.authenticate('jwt', { session: false }), getUserPhoneNumbers);
 
 /**
  * @swagger

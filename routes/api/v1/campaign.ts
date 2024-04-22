@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import { createCampaign, getCampaigns, updateCampaign, deleteCampaign } from "../../../controllers/campaignController";
+import { createCampaign, getCampaigns, updateCampaign, deleteCampaign, getCampaignById } from "../../../controllers/campaignController";
 import passport from "passport";
 
 /**
@@ -67,6 +67,37 @@ router.get('/', passport.authenticate('jwt', { session: false }), getCampaigns);
 
 /**
  * @swagger
+ * /api/v1/campaign/{campaignId}:
+ *  get:
+ *    summary: Retrieve a specific campaign by ID
+ *    tags: [Campaign Management]
+ *    security:
+ *      - jwt: []
+ *    parameters:
+ *      - in: path
+ *        name: campaignId
+ *        required: true
+ *        schema:
+ *          type: integer
+ *        description: The ID of the campaign to retrieve
+ *    responses:
+ *      200:
+ *        description: Campaign retrieved successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Campaign'
+ *      404:
+ *        description: Campaign not found
+ *      401:
+ *        description: Unauthorized
+ *      500:
+ *        description: Server error
+ */
+router.get('/:campaignId', passport.authenticate('jwt', { session: false }), getCampaignById);
+
+/**
+ * @swagger
  * /api/v1/campaign/update/{campaignId}:
  *  put:
  *    summary: Update a specific campaign
@@ -93,15 +124,22 @@ router.get('/', passport.authenticate('jwt', { session: false }), getCampaigns);
  *              description:
  *                type: string
  *                description: New description of the campaign
+ *              status:
+ *                type: string
+ *                description: New status of the campaign
  *    responses:
  *      200:
  *        description: Campaign updated successfully
- *      404:
- *        description: No campaign found or update failed
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Campaign'
  *      401:
  *        description: Unauthorized
+ *      404:
+ *        description: Campaign not found or not updated
  *      500:
- *        description: Server error while updating campaign
+ *        description: Server error
  */
 router.put('/update/:campaignId', passport.authenticate('jwt', { session: false }), updateCampaign);
 
