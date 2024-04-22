@@ -91,7 +91,7 @@ router.post('/purchase-number', passport.authenticate('jwt', { session: false })
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/IPhoneNumber'
+ *                $ref: '#/components/schemas/PhoneNumber'
  *      401:
  *        description: Unauthorized
  *      500:
