@@ -49,7 +49,7 @@ router.post('/register', registerUser);
  * @swagger
  * /api/v1/user/login:
  *  post:
- *    summary: Authenticate user and return JWT
+ *    summary: Authenticate user and return JWT and user details
  *    tags: [Users]
  *    requestBody:
  *      required: true
@@ -75,8 +75,28 @@ router.post('/register', registerUser);
  *              properties:
  *                message:
  *                  type: string
+ * 					example: 'Logged in successfully'
  *                token:
  *                  type: string
+ * 					example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+ * 				  user:
+ *                  type: object
+ *                  properties:
+ *                    userId:
+ *                      type: integer
+ *                      example: 1
+ *                    username:
+ *                      type: string
+ *                      example: 'johndoe'
+ *                    email:
+ *                      type: string
+ *                      example: 'johndoe@example.com'
+ *                    role:
+ *                      type: string
+ *                      example: 'admin'
+ * 					  tierId:
+ * 						type: integer
+ * 						example: 1
  *      401:
  *        description: Login failed
  *      500:
