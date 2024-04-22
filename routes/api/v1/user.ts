@@ -63,8 +63,10 @@ router.post('/register', registerUser);
  *            properties:
  *              email:
  *                type: string
+ *                example: 'useratexample.com'
  *              password:
  *                type: string
+ *                example: 'yourpassword'
  *    responses:
  *      200:
  *        description: Login successful
@@ -75,11 +77,11 @@ router.post('/register', registerUser);
  *              properties:
  *                message:
  *                  type: string
- * 					example: 'Logged in successfully'
+ *                  example: 'Logged in successfully'
  *                token:
  *                  type: string
- * 					example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
- * 				  user:
+ *                  example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+ *                user:
  *                  type: object
  *                  properties:
  *                    userId:
@@ -90,15 +92,23 @@ router.post('/register', registerUser);
  *                      example: 'johndoe'
  *                    email:
  *                      type: string
- *                      example: 'johndoe@example.com'
+ *                      example: 'johndoeatexample.com'
  *                    role:
  *                      type: string
  *                      example: 'admin'
- * 					  tierId:
- * 						type: integer
- * 						example: 1
+ *                    tierId:
+ *                      type: integer
+ *                      example: 2
  *      401:
  *        description: Login failed
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: 'Login failed'
  *      500:
  *        description: Server error
  */
