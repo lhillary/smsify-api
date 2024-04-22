@@ -24,7 +24,7 @@ class Campaign {
             `INSERT INTO campaigns (user_id, name, description, status) VALUES ($1, $2, $3, $4) RETURNING *;`,
             [userId, name, description, status]
         );
-        return newCampaign.rows[0] as ICampaign;
+        return toCamelCase(newCampaign.rows[0]) as ICampaign;
     }
 
     /**
@@ -40,7 +40,7 @@ class Campaign {
             `SELECT * FROM campaigns WHERE user_id = $1;`,
             [userId]
         );
-        return result.rows as ICampaign[];
+        return toCamelCase(result.rows) as ICampaign[];
     }
 
     /**

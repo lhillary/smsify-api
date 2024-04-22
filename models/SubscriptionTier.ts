@@ -35,7 +35,7 @@ class SubscriptionTier {
      */
     static async findAll(): Promise<ISubscriptionTier[] | null> {
         const result = await pool.query(`SELECT * FROM subscription_tiers WHERE deleted_at IS NULL;`);
-        return result.rows as ISubscriptionTier[];
+        return toCamelCase(result.rows) as ISubscriptionTier[];
     }
 
     /**

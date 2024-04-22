@@ -55,7 +55,7 @@ class Contact {
             `SELECT * FROM contacts WHERE campaign_id = $1 AND deleted_at IS NULL;`,
             [campaignId]
         );
-        return contacts.rows as IContact[];
+        return toCamelCase(contacts.rows) as IContact[];
     }
 
     /**

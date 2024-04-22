@@ -45,7 +45,7 @@ class ResponseModel {
              ) AND r.deleted_at IS NULL;`,
             [campaignId, userId]
         );
-        return result.rows as IResponse[];
+        return toCamelCase(result.rows) as IResponse[];
     }
 }
 

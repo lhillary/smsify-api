@@ -58,7 +58,7 @@ class Message {
             `SELECT * FROM messages WHERE campaign_id = $1 AND deleted_at IS NULL ORDER BY sent_at DESC;`,
             [campaignId]
         );
-        return result.rows as IMessage[];
+        return toCamelCase(result.rows) as IMessage[];
     }
 
     /**

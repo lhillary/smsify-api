@@ -61,7 +61,7 @@ class PhoneNumber {
             `SELECT * FROM phone_numbers WHERE user_id = $1 AND deleted_at IS NULL;;`,
             [userId]
         );
-        return phoneNumbers.rows as IPhoneNumber[];
+        return toCamelCase(phoneNumbers.rows) as IPhoneNumber[];
     }
 
     /**

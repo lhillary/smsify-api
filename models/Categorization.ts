@@ -23,7 +23,7 @@ class Categorization {
              VALUES ($1, $2) RETURNING *;`,
             [campaignId, label]
         );
-        return result.rows[0] as ICampaignCategory;
+        return toCamelCase(result.rows[0]) as ICampaignCategory;
     }
 
     /**
@@ -40,7 +40,7 @@ class Categorization {
              WHERE campaign_id = $1 AND deleted_at IS NULL;`,
             [campaignId]
         );
-        return result.rows as ICampaignCategory[];  
+        return toCamelCase(result.rows) as ICampaignCategory[];  
     }
 
     /**
