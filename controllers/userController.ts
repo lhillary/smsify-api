@@ -35,7 +35,14 @@ export const loginUser = (req: Request, res: Response) => {
             return res.status(401).json({ message: info?.message || 'Login failed' });
         }
         const token = generateToken(user.userId);
-        res.json({ message: 'Logged in successfully', token });
+		const userForClient = {
+            userId: user.userId,
+            username: user.username,
+            email: user.email,
+            role: user.role,
+			tierId: user.tierId,
+        };
+        res.json({ message: 'Logged in successfully', token, user: userForClient });
     })(req, res);
 };
 
