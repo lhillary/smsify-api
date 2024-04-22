@@ -29,7 +29,9 @@ import subscriptionTierV1Routes from "./routes/api/v1/subscriptionTier";
 import categorizationV1Routes from "./routes/api/v1/categorization";
 
 // Middlewares
-app.use(cors());
+app.use(cors({
+	exposedHeaders: ['Authorization', 'Content-Type'],
+}));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 
