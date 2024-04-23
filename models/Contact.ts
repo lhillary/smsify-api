@@ -81,6 +81,8 @@ class Contact {
                 values.push(updates[key as keyof ContactUpdates]);
             }
         });
+
+		console.log('ALL OF THIS BULLSHIT', setParts, values);
     
         if (setParts.length > 0) {
             const result = await pool.query(
