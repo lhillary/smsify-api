@@ -75,34 +75,42 @@ class Contact {
      */
     static async update(contactId: number, userId: number, updates: ContactUpdates): Promise<IContact | null> {
 		const setParts: string[] = [];
-		const values: (string | number | undefined)[] = [];
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const values: any[] = [contactId, userId]; // Start with contactId and userId
+	
+		// Define the field mappings
 		const fieldMappings: FieldMappings = {
 			name: 'name',
 			phoneNumber: 'phone_number',
 		};
 	
-		Object.keys(updates).forEach((key, index) => {
-			const dbField = fieldMappings[key as UpdateKeys];
-			if (dbField) {
-				setParts.push(`${dbField} = $${index + 2}`);
-				values.push(updates[key as keyof ContactUpdates]);
+		// Dynamically build the SQL update statement
+		Object.entries(updates).forEach(([key, value]) => {
+			if (fieldMappings[key as UpdateKeys]) {
+				setParts.push(`${fieldMappings[key as UpdateKeys]} = $${values.length + 1}`); // Index based on current length of values
+				values.push(value);
 			}
 		});
 	
 		console.log('Debug: Set Parts and Values:', setParts, values);
 	
 		if (setParts.length > 0) {
-			const result = await pool.query(
-				`UPDATE contacts SET ${setParts.join(', ')} WHERE contact_id = $1 AND user_id = $2 RETURNING *;`,
-				[contactId, userId, ...values]
-			);
-			if (result.rows.length > 0) {
-				return toCamelCase(result.rows[0]) as IContact;
+			const queryString = `UPDATE contacts SET ${setParts.join(', ')} WHERE contact_id = $1 AND user_id = $2 RETURNING *;`;
+			console.log('Query String:', queryString);
+			try {
+				const result = await pool.query(queryString, values);
+				if (result.rows.length > 0) {
+					return toCamelCase(result.rows[0]) as IContact;
+				}
+				return null;
+			} catch (error) {
+				console.error('SQL Error:', error);
+				throw error; // Or handle this error appropriately
 			}
-			return null;
 		}
 		return null;
 	}
+	
 
     /**
      *
