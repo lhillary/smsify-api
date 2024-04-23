@@ -15,6 +15,17 @@ export const addCategorization = async (req: Request, res: Response): Promise<vo
     }
 };
 
+export const getCategoryByCampaign = async (req: Request, res: Response) => {
+    const { campaignId } = req.params;
+    try {
+        const categories = await Categorization.findByCampaign(parseInt(campaignId));
+        res.json(categories);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server error while retrieving categories");
+    }
+};
+
 export const updateCategory = async (req: Request, res: Response): Promise<void> => {
     const { newLabel } = req.body;
     const { categoryId } = req.params;

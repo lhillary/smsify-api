@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import { createContact, getContacts, updateContact, deleteContact } from "../../../controllers/contactController";
+import { createContact, getContacts, updateContact, deleteContact, getContactByCampaign } from "../../../controllers/contactController";
 import passport from "passport";
 
 /**
@@ -64,6 +64,30 @@ router.post('/', passport.authenticate('jwt', { session: false }), createContact
  *        description: Server error
  */
 router.get('/', passport.authenticate('jwt', { session: false }), getContacts);
+
+/**
+ * @swagger
+ * /api/v1/contact/by-campaign:
+ *  get:
+ *    summary: Retrieve all contacts by campaign
+ *    tags: [Contact Management]
+ *    security:
+ *      - jwt: []
+ *    responses:
+ *      200:
+ *        description: List of all contacts by campaign
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Contact'
+ *      401:
+ *        description: Unauthorized
+ *      500:
+ *        description: Server error
+ */
+router.get('/', passport.authenticate('jwt', { session: false }), getContactByCampaign);
 
 /**
  * @swagger

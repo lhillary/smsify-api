@@ -33,13 +33,9 @@ export const getContacts = async (req: Request, res: Response) => {
 };
 
 export const getContactByCampaign = async (req: Request, res: Response) => {
-    if (!req.user || !req.user.userId) {
-        res.status(401).send("Unauthorized");
-        return;
-    }
-    const userId = req.user.userId;
+    const { campaignId } = req.params;
     try {
-        const contacts = await Contact.findByUserId(userId);
+        const contacts = await Contact.findByCampaignId(parseInt(campaignId));
         res.json(contacts);
     } catch (error) {
         console.error(error);

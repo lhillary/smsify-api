@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import { addCategorization, updateCategory, deleteCategory } from "../../../controllers/categorizationController";
+import { addCategorization, updateCategory, deleteCategory, getCategoryByCampaign } from "../../../controllers/categorizationController";
 import passport from "passport";
 
 /**
@@ -44,6 +44,30 @@ import passport from "passport";
  *        description: Failed to add categories due to server error
  */
 router.post('/', passport.authenticate('jwt', { session: false }), addCategorization);
+
+/**
+ * @swagger
+ * /api/v1/category/:
+ *  get:
+ *    summary: Retrieve all categories by campaign
+ *    tags: [Category Management]
+ *    security:
+ *      - jwt: []
+ *    responses:
+ *      200:
+ *        description: List of all categories by campaign
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/CampaignCategory'
+ *      401:
+ *        description: Unauthorized
+ *      500:
+ *        description: Server error
+ */
+router.get('/', passport.authenticate('jwt', { session: false }), getCategoryByCampaign);
 
 /**
  * @swagger
