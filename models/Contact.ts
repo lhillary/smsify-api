@@ -83,6 +83,7 @@ class Contact {
         });
 
 		console.log('ALL OF THIS BULLSHIT', setParts, values);
+		console.log('QUERY',`UPDATE contacts SET ${setParts.join(', ')}`, ...values);
     
         if (setParts.length > 0) {
             const result = await pool.query(
