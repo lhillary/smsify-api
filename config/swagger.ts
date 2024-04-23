@@ -136,13 +136,15 @@ const swaggerDefinition = {
 		bearerAuth: {
 			type: 'http',
 			scheme: 'bearer',
-			bearerFormat: 'jwt'
+			bearerFormat: 'JWT'
 		}
 	  }
   },
-  security: {
-	bearerAuth: []
-  }
+  security: [
+	{
+		bearerAuth: []
+	}
+  ]
 };
 
 const options = {
