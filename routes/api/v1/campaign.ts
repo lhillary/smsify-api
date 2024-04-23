@@ -20,7 +20,6 @@ import passport from "passport";
  *            required:
  *              - name
  *              - description
- *              - phoneNumber  // Ensure phoneNumber is listed as required if it is mandatory
  *            properties:
  *              name:
  *                type: string
