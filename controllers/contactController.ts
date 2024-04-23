@@ -52,6 +52,8 @@ export const updateContact = async (req: Request, res: Response) => {
     const userId = req.user.userId;
     const updates = req.body; 
 
+	console.log('UPDATES', updates);
+
     try {
         if (Object.keys(updates).length === 0) {
             return res.status(400).json({ message: 'No update data provided' });
