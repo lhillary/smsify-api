@@ -19,14 +19,18 @@ import passport from "passport";
  *            type: object
  *            required:
  *              - name
- *              - phone_number
+ *              - phoneNumber
+ *              - campaignId
  *            properties:
  *              name:
  *                type: string
  *                description: The name of the contact
- *              phone_number:
+ *              phoneNumber:
  *                type: string
  *                description: The phone number of the contact
+ *              campaignId:
+ *                type: integer
+ *                description: The ID of the campaign this contact is associated with
  *    responses:
  *      201:
  *        description: Contact created successfully
@@ -37,7 +41,7 @@ import passport from "passport";
  *      401:
  *        description: Unauthorized
  *      500:
- *        description: Server error
+ *        description: Server error while creating contact
  */
 router.post('/', passport.authenticate('jwt', { session: false }), createContact);
 

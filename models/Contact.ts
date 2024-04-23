@@ -18,10 +18,10 @@ class Contact {
      * @return {*}  {Promise<IContact>}
      * @memberof Contact
      */
-    static async create(userId: number, name: string, phoneNumber: string): Promise<IContact> {
+    static async create(userId: number, name: string, phoneNumber: string, campaignId: number): Promise<IContact> {
         const newContact = await pool.query(
-            `INSERT INTO contacts (user_id, name, phone_number) VALUES ($1, $2, $3) RETURNING *;`,
-            [userId, name, phoneNumber]
+            `INSERT INTO contacts (user_id, name, phone_number, campaign_id) VALUES ($1, $2, $3, $4) RETURNING *;`,
+            [userId, name, phoneNumber, campaignId]
         );
         return toCamelCase(newContact.rows[0]) as IContact;
     }
