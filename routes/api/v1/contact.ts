@@ -72,7 +72,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), getContacts);
  *    summary: Retrieve all contacts by campaign
  *    tags: [Contact Management]
  *    security:
- *      - bearerAuth: []  // Corrected security scheme reference
+ *      - bearerAuth: []
  *    parameters:
  *      - in: path
  *        name: campaignId
