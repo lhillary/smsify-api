@@ -20,7 +20,6 @@ import passport from "passport";
  *            type: object
  *            required:
  *              - name
- *              - description
  *            properties:
  *              name:
  *                type: string
@@ -28,8 +27,8 @@ import passport from "passport";
  *              description:
  *                type: string
  *                description: A brief description of the campaign
- *              phoneNumber: 
- *                type: string
+ *              phoneNumberId: 
+ *                type: integer
  *                description: A phone number associated with the campaign
  *    responses:
  *      201:

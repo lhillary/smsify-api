@@ -33,7 +33,7 @@ export interface IContact {
 export interface ICampaign {
     campaignId: number;
     userId: number;
-    phoneNumber: number;
+    phoneNumberId: number;
     name: string;
     status: string;
     createdAt?: Date;

@@ -66,7 +66,7 @@ const swaggerDefinition = {
             properties: {
                 campaignId: { type: 'integer', example: 10 },
                 userId: { type: 'integer', example: 1 },
-                phoneNumber: { type: 'integer', example: 101 },
+                phoneNumberId: { type: 'integer', example: 101 },
                 name: { type: 'string', example: 'Holiday Promo' },
                 status: { type: 'string', example: 'active' },
                 createdAt: { type: 'string', format: 'date-time', example: '2021-08-01T17:32:28Z' },

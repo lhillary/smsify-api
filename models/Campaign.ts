@@ -20,10 +20,10 @@ class Campaign {
 	 * @return {*}  {Promise<ICampaign>}
 	 * @memberof Campaign
 	 */
-	static async create(userId: number, name: string, description: string, phoneNumber: string, status = 'active'): Promise<ICampaign> {
+	static async create(userId: number, name: string, description: string, phoneNumberId: number, status = 'active'): Promise<ICampaign> {
         const newCampaign = await pool.query(
-            `INSERT INTO campaigns (user_id, name, description, phone_number, status) VALUES ($1, $2, $3, $4, $5) RETURNING *;`,
-            [userId, name, description, phoneNumber, status]
+            `INSERT INTO campaigns (user_id, name, description, phone_number_id, status) VALUES ($1, $2, $3, $4, $5) RETURNING *;`,
+            [userId, name, description, phoneNumberId, status]
         );
         return toCamelCase(newCampaign.rows[0]) as ICampaign;
     }
