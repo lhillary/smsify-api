@@ -8,9 +8,10 @@ import passport from "passport";
  * /api/v1/campaign/:
  *  post:
  *    summary: Create a new campaign
- *    tags: [Campaign Management]
+ *    tags:
+ *      - Campaign Management
  *    security:
- *      - bearerAuth: []  // Corrected security scheme reference
+ *      - bearerAuth: []
  *    requestBody:
  *      required: true
  *      content:
@@ -23,7 +24,7 @@ import passport from "passport";
  *            properties:
  *              name:
  *                type: string
- *                description: The name of the campaign
+ *                description: The name of the campaigns
  *              description:
  *                type: string
  *                description: A brief description of the campaign

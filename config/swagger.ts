@@ -91,7 +91,7 @@ const swaggerDefinition = {
                 messageId: { type: 'integer', example: 500 },
                 campaignId: { type: 'integer', example: 10 },
                 contactId: { type: 'integer', example: 200 },
-                messageContent: { type: 'string', example: 'Don’t miss our special holiday sale!' },
+                messageContent: { type: 'string', example: 'Dont miss our special holiday sale!' },
                 sentAt: { type: 'string', format: 'date-time', example: '2021-08-02T10:00:00Z' },
                 status: { type: 'string', example: 'sent' },
                 deletedAt: { type: 'string', format: 'date-time' },
