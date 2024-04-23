@@ -121,7 +121,7 @@ router.post('/login', loginUser);
  *    summary: Update user information
  *    tags: [Users]
  *    security:
- *      - jwt: []
+ *      - BearerAuth: []
  *    requestBody:
  *      required: true
  *      content:
@@ -154,7 +154,7 @@ router.put('/update', passport.authenticate('jwt', { session: false }), updateUs
  *    summary: Delete a user
  *    tags: [Users]
  *    security:
- *      - jwt: []
+ *      - BearerAuth: []
  *    responses:
  *      204:
  *        description: User deleted successfully

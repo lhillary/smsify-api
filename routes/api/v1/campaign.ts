@@ -10,7 +10,7 @@ import passport from "passport";
  *    summary: Create a new campaign
  *    tags: [Campaign Management]
  *    security:
- *      - jwt: []
+ *      - BearerAuth: []
  *    requestBody:
  *      required: true
  *      content:
@@ -27,6 +27,9 @@ import passport from "passport";
  *              description:
  *                type: string
  *                description: A brief description of the campaign
+ * 				phoneNumber: 
+ * 				  type: string
+ * 				  description: A phone number associated with the campaign
  *    responses:
  *      201:
  *        description: Campaign created successfully
@@ -48,7 +51,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), createCampaig
  *    summary: Retrieve all campaigns created by the user
  *    tags: [Campaign Management]
  *    security:
- *      - jwt: []
+ *      - BearerAuth: []
  *    responses:
  *      200:
  *        description: An array of campaigns
@@ -72,7 +75,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), getCampaigns);
  *    summary: Retrieve a specific campaign by ID
  *    tags: [Campaign Management]
  *    security:
- *      - jwt: []
+ *      - BearerAuth: []
  *    parameters:
  *      - in: path
  *        name: campaignId
@@ -103,7 +106,7 @@ router.get('/:campaignId', passport.authenticate('jwt', { session: false }), get
  *    summary: Update a specific campaign
  *    tags: [Campaign Management]
  *    security:
- *      - jwt: []
+ *      - BearerAuth: []
  *    parameters:
  *      - in: path
  *        name: campaignId
@@ -150,7 +153,7 @@ router.put('/update/:campaignId', passport.authenticate('jwt', { session: false 
  *    summary: Delete a specific campaign
  *    tags: [Campaign Management]
  *    security:
- *      - jwt: []
+ *      - BearerAuth: []
  *    parameters:
  *      - in: path
  *        name: campaignId

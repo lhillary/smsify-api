@@ -14,7 +14,7 @@ const swaggerDefinition = {
     },
     servers: [
         {
-            url: 'https://smsify-api-e90c6e0cdd2d.herokuapp.com/',
+            url: 'https://smsify-api-e90c6e0cdd2d.herokuapp.com',
             description: 'Development server',
         },
     ],
@@ -131,7 +131,17 @@ const swaggerDefinition = {
             },
             required: ['categorizationId', 'responseId', 'categoryId']
         },
-      }
+      },
+	  securitySchemes: {
+		bearerAuth: {
+			type: 'http',
+			scheme: 'bearer',
+			bearerFormat: 'jwt'
+		}
+	  }
+  },
+  security: {
+	bearerAuth: []
   }
 };
 

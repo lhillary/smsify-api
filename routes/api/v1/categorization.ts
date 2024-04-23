@@ -10,7 +10,7 @@ import passport from "passport";
  *    summary: Add new category to a campaign
  *    tags: [Category Management]
  *    security:
- *      - jwt: []
+ *      - BearerAuth: []
  *    requestBody:
  *      required: true
  *      content:
@@ -52,7 +52,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), addCategoriza
  *    summary: Retrieve all categories by campaign
  *    tags: [Category Management]
  *    security:
- *      - jwt: []
+ *      - BearerAuth: []
  *    responses:
  *      200:
  *        description: List of all categories by campaign
@@ -76,7 +76,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), getCategoryByC
  *    summary: Update an existing category
  *    tags: [Category Management]
  *    security:
- *      - jwt: []
+ *      - BearerAuth: []
  *    parameters:
  *      - in: path
  *        name: categoryId
@@ -113,7 +113,7 @@ router.put('/update/:categoryId', passport.authenticate('jwt', { session: false 
  *    summary: Delete a category
  *    tags: [Category Management]
  *    security:
- *      - jwt: []
+ *      - BearerAuth: []
  *    parameters:
  *      - in: path
  *        name: categoryId

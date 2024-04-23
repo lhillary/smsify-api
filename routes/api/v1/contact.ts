@@ -10,7 +10,7 @@ import passport from "passport";
  *    summary: Create a new contact
  *    tags: [Contact Management]
  *    security:
- *      - jwt: []
+ *      - BearerAuth: []
  *    requestBody:
  *      required: true
  *      content:
@@ -48,7 +48,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), createContact
  *    summary: Retrieve all contacts
  *    tags: [Contact Management]
  *    security:
- *      - jwt: []
+ *      - BearerAuth: []
  *    responses:
  *      200:
  *        description: List of all contacts
@@ -72,7 +72,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), getContacts);
  *    summary: Retrieve all contacts by campaign
  *    tags: [Contact Management]
  *    security:
- *      - jwt: []
+ *      - BearerAuth: []
  *    responses:
  *      200:
  *        description: List of all contacts by campaign
@@ -96,7 +96,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), getContactByCa
  *    summary: Update an existing contact
  *    tags: [Contact Management]
  *    security:
- *      - jwt: []
+ *      - BearerAuth: []
  *    parameters:
  *      - in: path
  *        name: contactId
@@ -136,7 +136,7 @@ router.put('/update/:contactId', passport.authenticate('jwt', { session: false }
  *    summary: Delete a contact
  *    tags: [Contact Management]
  *    security:
- *      - jwt: []
+ *      - BearerAuth: []
  *    parameters:
  *      - in: path
  *        name: contactId

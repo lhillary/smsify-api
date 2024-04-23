@@ -10,7 +10,7 @@ import passport from "passport";
  *    summary: List available Twilio phone numbers that match the search criteria
  *    tags: [Phone Number Management]
  *    security:
- *      - jwt: []
+ *      - BearerAuth: []
  *    parameters:
  *      - in: query
  *        name: searchTerm
@@ -44,7 +44,7 @@ router.get('/available-numbers', passport.authenticate('jwt', { session: false }
  *    summary: Purchase and register a new phone number
  *    tags: [Phone Number Management]
  *    security:
- *      - jwt: []
+ *      - BearerAuth: []
  *    requestBody:
  *      required: true
  *      content:
@@ -82,7 +82,7 @@ router.post('/purchase-number', passport.authenticate('jwt', { session: false })
  *    summary: Retrieve all phone numbers associated with the authenticated user
  *    tags: [Phone Number Management]
  *    security:
- *      - jwt: []
+ *      - BearerAuth: []
  *    responses:
  *      200:
  *        description: List of phone numbers associated with the user
@@ -107,7 +107,7 @@ router.get('/user-numbers', passport.authenticate('jwt', { session: false }), ge
  *    summary: Deactivate a registered phone number
  *    tags: [Phone Number Management]
  *    security:
- *      - jwt: []
+ *      - BearerAuth: []
  *    parameters:
  *      - in: path
  *        name: phoneNumberId
