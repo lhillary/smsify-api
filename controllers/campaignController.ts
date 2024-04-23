@@ -7,9 +7,9 @@ export const createCampaign = async (req: Request, res: Response): Promise<void>
         return;
     }
     const userId = req.user.userId;
-    const { name, description } = req.body;
+    const { name, description, phoneNumber } = req.body;
     try {
-        const campaign = await Campaign.create(userId, name, description);
+        const campaign = await Campaign.create(userId, name, description, phoneNumber);
         res.status(201).json(campaign);
     } catch (error) {
         console.error(error);

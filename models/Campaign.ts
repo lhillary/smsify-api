@@ -9,20 +9,21 @@ import { ICampaign, CampaignUpdates } from '../types/interfaces';
  */
 class Campaign {
     /**
-     *
-     *
-     * @static
-     * @param {number} userId
-     * @param {string} name
-     * @param {string} description
-     * @param {string} [status='active']
-     * @return {*}  {Promise<ICampaign>}
-     * @memberof Campaign
-     */
-    static async create(userId: number, name: string, description: string, status = 'active'): Promise<ICampaign> {
+	 *
+	 *
+	 * @static
+	 * @param {number} userId
+	 * @param {string} name
+	 * @param {string} description
+	 * @param {string} phoneNumber
+	 * @param {string} [status='active']
+	 * @return {*}  {Promise<ICampaign>}
+	 * @memberof Campaign
+	 */
+	static async create(userId: number, name: string, description: string, phoneNumber: string, status = 'active'): Promise<ICampaign> {
         const newCampaign = await pool.query(
-            `INSERT INTO campaigns (user_id, name, description, status) VALUES ($1, $2, $3, $4) RETURNING *;`,
-            [userId, name, description, status]
+            `INSERT INTO campaigns (user_id, name, description, phone_number, status) VALUES ($1, $2, $3, $4, $5) RETURNING *;`,
+            [userId, name, description, phoneNumber, status]
         );
         return toCamelCase(newCampaign.rows[0]) as ICampaign;
     }
