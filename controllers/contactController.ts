@@ -35,8 +35,9 @@ export const getContacts = async (req: Request, res: Response) => {
 export const getContactByCampaign = async (req: Request, res: Response) => {
     const { campaignId } = req.params;
 	console.log('CAMPAIGN ID', campaignId);
+	console.log('REQ PARAMS', req.params);
     try {
-        const contacts = await Contact.findByCampaignId(parseInt(campaignId));
+        const contacts = await Contact.findByCampaignId(parseInt(campaignId, 10));
         res.json(contacts);
     } catch (error) {
         console.error(error);
