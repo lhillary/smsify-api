@@ -94,7 +94,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), getContacts);
  *      500:
  *        description: Server error
  */
-router.get('/by-campaign/:contactId', passport.authenticate('jwt', { session: false }), getContactByCampaign);
+router.get('/by-campaign/:campaignId', passport.authenticate('jwt', { session: false }), getContactByCampaign);
 
 /**
  * @swagger
