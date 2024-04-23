@@ -10,7 +10,7 @@ import passport from "passport";
  *    summary: Create a new contact
  *    tags: [Contact Management]
  *    security:
- *      - BearerAuth: []
+ *      - bearerAuth: []
  *    requestBody:
  *      required: true
  *      content:
@@ -48,7 +48,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), createContact
  *    summary: Retrieve all contacts
  *    tags: [Contact Management]
  *    security:
- *      - BearerAuth: []
+ *      - bearerAuth: []
  *    responses:
  *      200:
  *        description: List of all contacts
@@ -67,15 +67,22 @@ router.get('/', passport.authenticate('jwt', { session: false }), getContacts);
 
 /**
  * @swagger
- * /api/v1/contact/by-campaign:
+ * /api/v1/contact/by-campaign/{campaignId}:
  *  get:
  *    summary: Retrieve all contacts by campaign
  *    tags: [Contact Management]
  *    security:
- *      - BearerAuth: []
+ *      - bearerAuth: []  // Corrected security scheme reference
+ *    parameters:
+ *      - in: path
+ *        name: campaignId
+ *        required: true
+ *        schema:
+ *          type: integer
+ *        description: The ID of the campaign to retrieve contacts for
  *    responses:
  *      200:
- *        description: List of all contacts by campaign
+ *        description: List of all contacts associated with the campaign
  *        content:
  *          application/json:
  *            schema:
@@ -96,7 +103,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), getContactByCa
  *    summary: Update an existing contact
  *    tags: [Contact Management]
  *    security:
- *      - BearerAuth: []
+ *      - bearerAuth: []
  *    parameters:
  *      - in: path
  *        name: contactId
@@ -136,7 +143,7 @@ router.put('/update/:contactId', passport.authenticate('jwt', { session: false }
  *    summary: Delete a contact
  *    tags: [Contact Management]
  *    security:
- *      - BearerAuth: []
+ *      - bearerAuth: []
  *    parameters:
  *      - in: path
  *        name: contactId

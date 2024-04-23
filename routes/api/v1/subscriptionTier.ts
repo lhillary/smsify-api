@@ -11,7 +11,7 @@ import { isAdmin } from "../../../middlewares/authRoleChecker";
  *    summary: Create a new subscription tier
  *    tags: [Subscription Tiers]
  *    security:
- *      - BearerAuth: []
+ *      - bearerAuth: []
  *    requestBody:
  *      required: true
  *      content:
@@ -49,7 +49,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), isAdmin, crea
  *    summary: Retrieve all subscription tiers
  *    tags: [Subscription Tiers]
  *    security:
- *      - BearerAuth: []
+ *      - bearerAuth: []
  *    responses:
  *      200:
  *        description: List of subscription tiers
@@ -71,7 +71,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), isAdmin, getTi
  *    summary: Update a subscription tier
  *    tags: [Subscription Tiers]
  *    security:
- *      - BearerAuth: []
+ *      - bearerAuth: []
  *    parameters:
  *      - in: path
  *        name: tierId
@@ -110,7 +110,7 @@ router.put('/update/:tierId', passport.authenticate('jwt', { session: false }), 
  *    summary: Delete a subscription tier
  *    tags: [Subscription Tiers]
  *    security:
- *      - BearerAuth: []
+ *      - bearerAuth: []
  *    parameters:
  *      - in: path
  *        name: tierId

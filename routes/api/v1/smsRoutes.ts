@@ -12,7 +12,7 @@ const router = express.Router();
  *    summary: Send bulk SMS to all contacts in a campaign
  *    tags: [SMS]
  *    security:
- *      - BearerAuth: []
+ *      - bearerAuth: []
  *    requestBody:
  *      required: true
  *      content:
@@ -104,7 +104,7 @@ router.post('/status', validateTwilioRequest, handleMessageStatus);
  *    summary: Fetch all responses for a specific campaign
  *    tags: [SMS]
  *    security:
- *      - BearerAuth: []
+ *      - bearerAuth: []
  *    parameters:
  *      - in: path
  *        name: campaignId
@@ -135,7 +135,7 @@ router.get('/responses/:campaignId', passport.authenticate('jwt', { session: fal
  *    summary: Fetch all messages sent in a specific campaign
  *    tags: [SMS]
  *    security:
- *      - BearerAuth: []
+ *      - bearerAuth: []
  *    parameters:
  *      - in: path
  *        name: campaignId
