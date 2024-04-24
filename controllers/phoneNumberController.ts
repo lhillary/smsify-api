@@ -5,7 +5,7 @@ import { Request, Response } from "express";
 export const listAvailableNumbers = async (req: Request, res: Response) => {
 	const searchTerm = req.query.searchTerm as string;
     try {
-        const availableNumbers = await twilioClient.availablePhoneNumbers('US').local.list({contains: searchTerm, limit: 20});
+        const availableNumbers = await twilioClient.availablePhoneNumbers('US').local.list({contains: searchTerm, smsEnabled: true, limit: 25});
         res.json(availableNumbers);
     } catch (err) {
         console.error(err);
