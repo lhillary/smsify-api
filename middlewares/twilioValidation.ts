@@ -16,6 +16,8 @@ export function validateTwilioRequest(req: Request, res: Response, next: NextFun
     const twilioSignature = req.headers['x-twilio-signature'] as string;
     const url = 'https://smsify-api-e90c6e0cdd2d.herokuapp.com/' + req.originalUrl;  // Your server URL + endpoint change this
 
+	console.log('WHY ISNT THIS VALIDATING', twilioAuthToken, twilioSignature, url, req.body);
+
     if (!twilio.validateRequest(twilioAuthToken, twilioSignature, url, req.body)) {
         console.error('Failed Twilio request validation');
         return res.status(401).send('Invalid request signature.');
