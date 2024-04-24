@@ -1,6 +1,6 @@
 import { toCamelCase } from '../helpers/dbUtils';
 import pool from '../config/db';
-import { ICampaign, CampaignUpdates } from '../types/interfaces';
+import { ICampaign, CampaignUpdates, UpdateKeys, FieldMappings } from '../types/interfaces';
 
 /**
  *
@@ -71,26 +71,38 @@ class Campaign {
      */
     static async update(campaignId: number, updates: CampaignUpdates): Promise<ICampaign | null> {
         const setParts: string[] = [];
-        const values: (string | number | undefined)[] = [];
-        const allowedFields = ['name', 'description', 'status', 'phoneNumber'];
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const values: any[] = [campaignId]; 
+		const fieldMappings: FieldMappings = {
+			name: 'name',
+			description: 'description',
+			status: 'status',
+			phoneNumber: 'phone_number',
+		};
     
         // Dynamically build the SQL update statement
-        Object.keys(updates).forEach((key, index) => {
-            if (allowedFields.includes(key)) {
-                setParts.push(`${key} = $${index + 2}`); 
-                values.push(updates[key as keyof CampaignUpdates]);
-            }
-        });
+        Object.entries(updates).forEach(([key, value]) => {
+			if (fieldMappings[key as UpdateKeys]) {
+				setParts.push(`${fieldMappings[key as UpdateKeys]} = $${values.length + 1}`);
+				values.push(value);
+			}
+		});
+
+		console.log('Debug: Set Parts and Values:', setParts, values);
     
         if (setParts.length > 0) {
-            const result = await pool.query(
-                `UPDATE campaigns SET ${setParts.join(', ')} WHERE campaign_id = $1 RETURNING *;`,
-                [campaignId, ...values]
-            );
-            if (result.rows.length > 0) {
-                return toCamelCase(result.rows[0]) as ICampaign;
-            }
-            return null;
+			const queryString = `UPDATE campaigns SET ${setParts.join(', ')} WHERE campaign_id = $1 RETURNING *;`;
+			console.log('Query String:', queryString);
+			try {
+				const result = await pool.query(queryString, values);
+				if (result.rows.length > 0) {
+					return toCamelCase(result.rows[0]) as ICampaign;
+				}
+				return null;
+			} catch(error) {
+				console.error('SQL Error:', error);
+				throw error;
+			}
         }
         return null;
     }

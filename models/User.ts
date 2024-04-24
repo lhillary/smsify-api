@@ -1,5 +1,5 @@
 import pool from '../config/db';
-import { UserUpdates, IUser } from '../types/interfaces';
+import { UserUpdates, IUser, UpdateKeys, FieldMappings } from '../types/interfaces';
 import { toCamelCase } from '../helpers/dbUtils';
 
 /**
@@ -78,27 +78,39 @@ class User {
      * @memberof User
      */
     static async update(userId: number, updates: UserUpdates): Promise<IUser | null> {
-        const setParts: string[] = [];
-        const values: (string | number | undefined)[] = [];
-        const allowedFields = ['username', 'email', 'passwordHash', 'tierId']
+		const setParts: string[] = [];
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const values: any[] = [userId]; 
+	
+		const fieldMappings: FieldMappings = {
+			username: 'username',
+			email: 'phone_number',
+			passwordHash: 'password_hash',
+			tierId: 'tier_id',
+		};
     
         // Dynamically build the SQL update statement
-        Object.keys(updates).forEach((key, index) => {
-            if (allowedFields.includes(key)) {
-                setParts.push(`${key} = $${index + 2}`); 
-                values.push(updates[key as keyof UserUpdates]);
-            }
-        });
+        Object.entries(updates).forEach(([key, value]) => {
+			if (fieldMappings[key as UpdateKeys]) {
+				setParts.push(`${fieldMappings[key as UpdateKeys]} = $${values.length + 1}`);
+				values.push(value);
+			}
+		});
+
+		console.log('Debug: Set Parts and Values:', setParts, values);
     
         if (setParts.length > 0) {
-            const result = await pool.query(
-                `UPDATE users SET ${setParts.join(', ')} WHERE user_id = $1 RETURNING *;`,
-                [userId, ...values]
-            );
-            if (result.rows.length > 0) {
-                return toCamelCase(result.rows[0]) as IUser;
-            }
-            return null;
+			const queryString = `UPDATE users SET ${setParts.join(', ')} WHERE user_id = $1 RETURNING *;`;
+			console.log('Query String:', queryString);
+			try {
+				const result = await pool.query(queryString, values);
+				if (result.rows.length > 0) {
+					return toCamelCase(result.rows[0]) as IUser;
+				}
+				return null;
+			} catch (error) {
+				console.error('SQL Error:', error);
+			}
         }
         return null;
     }

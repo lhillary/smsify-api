@@ -100,3 +100,8 @@ export interface CampaignUpdates {
     status?: string;
     phoneNumber?: string;
 }
+
+export type UpdateKeys = 'name' | 'phoneNumber' | 'username' | 'passwordHash' | 'email' | 'tierId' | 'description' | 'status';
+export type FieldMappings = {
+    [key in UpdateKeys]?: string;
+};

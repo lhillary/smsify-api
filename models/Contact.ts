@@ -1,11 +1,6 @@
 import { toCamelCase } from '../helpers/dbUtils';
 import pool from '../config/db';
-import { IContact, ContactUpdates } from '../types/interfaces';
-
-type UpdateKeys = 'name' | 'phoneNumber';
-type FieldMappings = {
-    [key in UpdateKeys]: string;
-};
+import { IContact, ContactUpdates, UpdateKeys, FieldMappings } from '../types/interfaces';
 
 /**
  *
@@ -76,9 +71,8 @@ class Contact {
     static async update(contactId: number, userId: number, updates: ContactUpdates): Promise<IContact | null> {
 		const setParts: string[] = [];
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const values: any[] = [contactId, userId]; // Start with contactId and userId
+		const values: any[] = [contactId, userId]; 
 	
-		// Define the field mappings
 		const fieldMappings: FieldMappings = {
 			name: 'name',
 			phoneNumber: 'phone_number',
@@ -87,7 +81,7 @@ class Contact {
 		// Dynamically build the SQL update statement
 		Object.entries(updates).forEach(([key, value]) => {
 			if (fieldMappings[key as UpdateKeys]) {
-				setParts.push(`${fieldMappings[key as UpdateKeys]} = $${values.length + 1}`); // Index based on current length of values
+				setParts.push(`${fieldMappings[key as UpdateKeys]} = $${values.length + 1}`);
 				values.push(value);
 			}
 		});
@@ -105,7 +99,7 @@ class Contact {
 				return null;
 			} catch (error) {
 				console.error('SQL Error:', error);
-				throw error; // Or handle this error appropriately
+				throw error;
 			}
 		}
 		return null;
