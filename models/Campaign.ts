@@ -77,7 +77,7 @@ class Campaign {
 			name: 'name',
 			description: 'description',
 			status: 'status',
-			phoneNumber: 'phone_number',
+			phoneNumberId: 'phone_number_id',
 		};
     
         // Dynamically build the SQL update statement

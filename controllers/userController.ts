@@ -46,6 +46,21 @@ export const loginUser = (req: Request, res: Response) => {
     })(req, res);
 };
 
+export const getUser = async (req: Request, res: Response) => {
+    if (!req.user || !req.user.userId) {
+        res.status(401).send("Unauthorized");
+        return;
+    }
+    const userId = req.user.userId;
+    try {
+        const user = await User.findById(userId);
+        res.json(user);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server error while retrieving user");
+    }
+};
+
 export const updateUser = async (req: Request, res: Response) => {
     if (!req.user || !req.user.userId) {
         res.status(401).send("Unauthorized");

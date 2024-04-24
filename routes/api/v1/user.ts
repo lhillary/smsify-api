@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import passport from "passport";
-import { registerUser, loginUser, updateUser, deleteUser } from "../../../controllers/userController";
+import { registerUser, loginUser, updateUser, deleteUser, getUser } from "../../../controllers/userController";
 
 /**
  * @swagger
@@ -113,6 +113,37 @@ router.post('/register', registerUser);
  *        description: Server error
  */
 router.post('/login', loginUser);
+
+/**
+ * @swagger
+ * /api/v1/user/{userId}:
+ *  get:
+ *    summary: Retrieve a specific user by ID
+ *    tags: [Users]
+ *    security:
+ *      - bearerAuth: []
+ *    parameters:
+ *      - in: path
+ *        name: userId
+ *        required: true
+ *        schema:
+ *          type: integer
+ *        description: The ID of the user to retrieve
+ *    responses:
+ *      200:
+ *        description: User retrieved successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/User'
+ *      404:
+ *        description: Campaign not found
+ *      401:
+ *        description: Unauthorized
+ *      500:
+ *        description: Server error
+ */
+router.post('/:userId', getUser);
 
 /**
  * @swagger

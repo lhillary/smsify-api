@@ -98,10 +98,10 @@ export interface CampaignUpdates {
     name?: string;
     description?: string;
     status?: string;
-    phoneNumber?: string;
+    phoneNumberId?: string;
 }
 
-export type UpdateKeys = 'name' | 'phoneNumber' | 'username' | 'passwordHash' | 'email' | 'tierId' | 'description' | 'status';
+export type UpdateKeys = 'name' | 'phoneNumber' | 'username' | 'passwordHash' | 'email' | 'tierId' | 'description' | 'status' | 'phoneNumberId';
 export type FieldMappings = {
     [key in UpdateKeys]?: string;
 };

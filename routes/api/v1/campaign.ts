@@ -130,6 +130,9 @@ router.get('/:campaignId', passport.authenticate('jwt', { session: false }), get
  *              status:
  *                type: string
  *                description: New status of the campaign
+ *              phoneNumberId:
+ *                type: number
+ *                description: New phone number id of the campaign
  *    responses:
  *      200:
  *        description: Campaign updated successfully
