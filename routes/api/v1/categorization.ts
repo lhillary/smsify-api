@@ -41,7 +41,7 @@ import passport from "passport";
  *      500:
  *        description: Failed to add categories due to server error
  */
-router.post('/by-campaign/:campaignId', passport.authenticate('jwt', { session: false }), addCategorization);
+router.post('/', passport.authenticate('jwt', { session: false }), addCategorization);
 
 /**
  * @swagger
@@ -72,7 +72,7 @@ router.post('/by-campaign/:campaignId', passport.authenticate('jwt', { session: 
  *      500:
  *        description: Server error
  */
-router.get('/', passport.authenticate('jwt', { session: false }), getCategoryByCampaign);
+router.get('/by-campaign/:campaignId', passport.authenticate('jwt', { session: false }), getCategoryByCampaign);
 
 /**
  * @swagger
