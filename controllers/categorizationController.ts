@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import Categorization from '../models/Categorization';
 
 export const addCategorization = async (req: Request, res: Response): Promise<void> => {
-    const { campaignId, categoryLabels } = req.body;  // categoryLabels should be an array of strings
+    const { campaignId, categoryLabels } = req.body;
 
     try {
         const categories = await Promise.all(categoryLabels.map((label: string) =>
@@ -16,7 +16,7 @@ export const addCategorization = async (req: Request, res: Response): Promise<vo
 };
 
 export const getCategoryByCampaign = async (req: Request, res: Response) => {
-    const { campaignId } = req.params;
+    const { campaignId } = req.body;
     try {
         const categories = await Categorization.findByCampaign(parseInt(campaignId as string, 10));
         res.json(categories);
@@ -44,7 +44,7 @@ export const updateCategory = async (req: Request, res: Response): Promise<void>
 };
 
 export const deleteCategory = async (req: Request, res: Response): Promise<void> => {
-    const { categoryId } = req.params;  // Assume category ID is a URL parameter
+    const { categoryId } = req.params;
 
     try {
         const deletedCategory = await Categorization.delete(parseInt(categoryId as string, 10));
