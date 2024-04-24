@@ -5,33 +5,22 @@ import passport from "passport";
 
 /**
  * @swagger
- * /api/v1/category/:
- *  post:
- *    summary: Add new category to a campaign
- *    tags: [Category Management]
+ * /api/v1/category/by-campaign/{campaignId}:
+ *  get:
+ *    summary: Retrieve all categories by campaign
+ *    tags: [category Management]
  *    security:
  *      - bearerAuth: []
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            required:
- *              - campaignId
- *              - categoryLabels
- *            properties:
- *              campaignId:
- *                type: integer
- *                description: The ID of the campaign to which categories are added
- *              categoryLabels:
- *                type: array
- *                items:
- *                  type: string
- *                description: List of category labels
+ *    parameters:
+ *      - in: path
+ *        name: campaignId
+ *        required: true
+ *        schema:
+ *          type: integer
+ *        description: The ID of the campaign to retrieve categories for
  *    responses:
- *      201:
- *        description: categories added successfully
+ *      200:
+ *        description: List of all categories associated with the campaign
  *        content:
  *          application/json:
  *            schema:
@@ -41,9 +30,9 @@ import passport from "passport";
  *      401:
  *        description: Unauthorized
  *      500:
- *        description: Failed to add categories due to server error
+ *        description: Server error
  */
-router.post('/', passport.authenticate('jwt', { session: false }), addCategorization);
+router.post('/by-campaign/:campaignId', passport.authenticate('jwt', { session: false }), addCategorization);
 
 /**
  * @swagger

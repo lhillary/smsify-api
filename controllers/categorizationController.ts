@@ -16,7 +16,7 @@ export const addCategorization = async (req: Request, res: Response): Promise<vo
 };
 
 export const getCategoryByCampaign = async (req: Request, res: Response) => {
-    const { campaignId } = req.body;
+    const { campaignId } = req.params;
 	console.log('THIS IS THE FUCKING CAMPAIGN ID', campaignId);
 	console.log('THIS IS THE REQ BODY', req.body);
     try {
