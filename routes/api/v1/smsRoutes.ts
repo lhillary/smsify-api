@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import { validateTwilioRequest } from '../../../middlewares/twilioValidation';
+//import { validateTwilioRequest } from '../../../middlewares/twilioValidation';
 import { handleMessageStatus, receiveSMS, sendBulkSMS, getResponsesByCampaign, getMessagesByCampaign } from '../../../controllers/smsController';
 
 const router = express.Router();
@@ -68,7 +68,7 @@ router.post('/sendBulk', passport.authenticate('jwt', { session: false }), sendB
  *      500:
  *        description: Error processing received SMS
  */
-router.post('/receive', validateTwilioRequest, receiveSMS);
+router.post('/receive', passport.authenticate('jwt', { session: false }), receiveSMS);
 
 /**
  * @swagger
@@ -95,7 +95,7 @@ router.post('/receive', validateTwilioRequest, receiveSMS);
  *      500:
  *        description: Failed to update status
  */
-router.post('/status', validateTwilioRequest, handleMessageStatus);
+router.post('/status', passport.authenticate('jwt', { session: false }), handleMessageStatus);
 
 /**
  * @swagger
