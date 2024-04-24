@@ -19,7 +19,7 @@ class Categorization {
      */
     static async create(campaignId: number, label: string): Promise<ICampaignCategory> {
         const result = await pool.query(
-            `INSERT INTO response_categories (campaign_id, category_label)
+            `INSERT INTO campaign_categories (campaign_id, category_label)
              VALUES ($1, $2) RETURNING *;`,
             [campaignId, label]
         );
