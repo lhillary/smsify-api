@@ -125,7 +125,7 @@ router.get('/by-campaign/:campaignId', passport.authenticate('jwt', { session: f
  *              name:
  *                type: string
  *                description: Updated name of the contact
- *              phone_number:
+ *              phoneNumber:
  *                type: string
  *                description: Updated phone number of the contact
  *    responses:
