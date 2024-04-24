@@ -98,10 +98,6 @@ export const getResponsesByCampaign = async (req: Request, res: Response): Promi
 
     try {
         const responses = await ResponseModel.findAllByCampaignId(userId, parseInt(campaignId));
-        if (responses.length === 0) {
-            res.status(404).send("No responses found for this campaign or campaign does not exist.");
-            return;
-        }
         res.json(responses);
     } catch (error) {
         console.error("Error fetching responses for campaign:", error);
@@ -114,11 +110,7 @@ export const getMessagesByCampaign = async (req: Request, res: Response): Promis
 
     try {
         const messages = await Message.findByCampaignId(parseInt(campaignId));
-        if (messages.length === 0) {
-            res.status(404).send("No messages found for this campaign.");
-        } else {
-            res.json(messages);
-        }
+		res.json(messages);
     } catch (error) {
         console.error("Error fetching messages:", error);
         res.status(500).send("Failed to fetch messages");
