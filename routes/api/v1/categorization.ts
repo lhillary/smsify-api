@@ -61,7 +61,6 @@ router.post('/', passport.authenticate('jwt', { session: false }), addCategoriza
  *            type: object
  *            required:
  *              - campaignId
- *              - categoryLabels
  *            properties:
  *              campaignId:
  *                type: integer
