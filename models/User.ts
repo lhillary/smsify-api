@@ -96,12 +96,9 @@ class User {
 				values.push(value);
 			}
 		});
-
-		console.log('Debug: Set Parts and Values:', setParts, values);
     
         if (setParts.length > 0) {
 			const queryString = `UPDATE users SET ${setParts.join(', ')} WHERE user_id = $1 RETURNING *;`;
-			console.log('Query String:', queryString);
 			try {
 				const result = await pool.query(queryString, values);
 				if (result.rows.length > 0) {
