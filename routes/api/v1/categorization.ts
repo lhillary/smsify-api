@@ -5,6 +5,46 @@ import passport from "passport";
 
 /**
  * @swagger
+ * /api/v1/category/:
+ *  post:
+ *    summary: Add new category to a campaign
+ *    tags: [Category Management]
+ *    security:
+ *      - bearerAuth: []
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            required:
+ *              - campaignId
+ *              - categoryLabels
+ *            properties:
+ *              campaignId:
+ *                type: integer
+ *                description: The ID of the campaign to which categories are added
+ *              categoryLabels:
+ *                type: array
+ *                items:
+ *                  type: string
+ *                description: List of category labels
+ *    responses:
+ *      201:
+ *        description: Category added successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/CampaignCategory'
+ *      401:
+ *        description: Unauthorized
+ *      500:
+ *        description: Failed to add categories due to server error
+ */
+router.post('/by-campaign/:campaignId', passport.authenticate('jwt', { session: false }), addCategorization);
+
+/**
+ * @swagger
  * /api/v1/category/by-campaign/{campaignId}:
  *  get:
  *    summary: Retrieve all categories by campaign
@@ -21,42 +61,6 @@ import passport from "passport";
  *    responses:
  *      200:
  *        description: List of all categories associated with the campaign
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                $ref: '#/components/schemas/CampaignCategory'
- *      401:
- *        description: Unauthorized
- *      500:
- *        description: Server error
- */
-router.post('/by-campaign/:campaignId', passport.authenticate('jwt', { session: false }), addCategorization);
-
-/**
- * @swagger
- * /api/v1/category/:
- *  get:
- *    summary: Retrieve all categories by campaign
- *    tags: [Category Management]
- *    security:
- *      - bearerAuth: []
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            required:
- *              - campaignId
- *            properties:
- *              campaignId:
- *                type: integer
- *                description: The ID of the campaign to which categories are added
- *    responses:
- *      200:
- *        description: List of all categories by campaign
  *        content:
  *          application/json:
  *            schema:
