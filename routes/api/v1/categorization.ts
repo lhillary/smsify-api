@@ -53,6 +53,19 @@ router.post('/', passport.authenticate('jwt', { session: false }), addCategoriza
  *    tags: [Category Management]
  *    security:
  *      - bearerAuth: []
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            required:
+ *              - campaignId
+ *              - categoryLabels
+ *            properties:
+ *              campaignId:
+ *                type: integer
+ *                description: The ID of the campaign to which categories are added
  *    responses:
  *      200:
  *        description: List of all categories by campaign
