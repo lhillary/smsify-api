@@ -35,6 +35,7 @@ class Categorization {
      * @memberof Categorization
      */
     static async findByCampaign(campaignId: number): Promise<ICampaignCategory[]> {
+		console.log('', campaignId);
         const result = await pool.query(
             `SELECT * FROM campaign_categories WHERE campaign_id = $1 AND deleted_at IS NULL;`,
             [campaignId]

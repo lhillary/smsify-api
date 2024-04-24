@@ -17,6 +17,7 @@ export const addCategorization = async (req: Request, res: Response): Promise<vo
 
 export const getCategoryByCampaign = async (req: Request, res: Response) => {
     const { campaignId } = req.body;
+	console.log('THIS IS THE FUCKING CAMPAIGN ID', campaignId);
     try {
         const categories = await Categorization.findByCampaign(parseInt(campaignId as string, 10));
         res.json(categories);
