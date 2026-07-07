@@ -14,8 +14,8 @@ const swaggerDefinition = {
     },
     servers: [
         {
-            url: 'https://smsify-api-e90c6e0cdd2d.herokuapp.com',
-            description: 'Development server',
+            url: process.env.BASE_URL || `http://localhost:${process.env.PORT || 3000}`,
+            description: 'API server',
         },
     ],
     components: {

@@ -1,8 +1,6 @@
 import twilio from 'twilio';
 import { Request, Response, NextFunction } from 'express';
 
-const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN ? process.env.TWILIO_AUTH_TOKEN : ''; 
-
 /**
  *
  *
@@ -13,10 +11,11 @@ const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN ? process.env.TWILIO_AUTH_
  * @return {*} 
  */
 export function validateTwilioRequest(req: Request, res: Response, next: NextFunction) {
+    // Read env vars at request time so dotenv is guaranteed to have loaded
+    const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN ?? '';
     const twilioSignature = req.headers['x-twilio-signature'] as string;
-    const url = 'https://smsify-api-e90c6e0cdd2d.herokuapp.com/' + req.originalUrl;  // Your server URL + endpoint change this
-
-	console.log('WHY ISNT THIS VALIDATING', twilioAuthToken, twilioSignature, url, req.body);
+    // Twilio signs the exact public URL it called; req.originalUrl already starts with '/'
+    const url = process.env.BASE_URL + req.originalUrl;
 
     if (!twilio.validateRequest(twilioAuthToken, twilioSignature, url, req.body)) {
         console.error('Failed Twilio request validation');
