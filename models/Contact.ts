@@ -50,10 +50,10 @@ class Contact {
      * @return {*}  {Promise<IContact[]>}
      * @memberof Contact
      */
-    static async findByCampaignId(campaignId: number): Promise<IContact[]> {
+    static async findByCampaignId(campaignId: number, userId: number): Promise<IContact[]> {
         const contacts = await pool.query(
-            `SELECT * FROM contacts WHERE campaign_id = $1 AND deleted_at IS NULL;`,
-            [campaignId]
+            `SELECT * FROM contacts WHERE campaign_id = $1 AND user_id = $2 AND deleted_at IS NULL;`,
+            [campaignId, userId]
         );
         return toCamelCase(contacts.rows) as IContact[];
     }

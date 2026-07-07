@@ -33,10 +33,14 @@ export const getCampaigns = async (req: Request, res: Response) => {
 };
 
 export const getCampaignById = async (req: Request, res: Response) => {
+    if (!req.user || !req.user.userId) {
+        res.status(401).send("Unauthorized");
+        return;
+    }
     const { campaignId } = req.params;
 
     try {
-        const campaign = await Campaign.findById(parseInt(campaignId, 10));
+        const campaign = await Campaign.findById(parseInt(campaignId, 10), req.user.userId);
         if (!campaign) {
             res.status(404).send("Campaign not found");
         } else {
@@ -49,6 +53,9 @@ export const getCampaignById = async (req: Request, res: Response) => {
 };
 
 export const updateCampaign = async (req: Request, res: Response) => {
+    if (!req.user || !req.user.userId) {
+        return res.status(401).send("Unauthorized");
+    }
     const { campaignId } = req.params;
     const updates = req.body; 
 
@@ -56,7 +63,7 @@ export const updateCampaign = async (req: Request, res: Response) => {
         if (Object.keys(updates).length === 0) {
             return res.status(400).json({ message: 'No update data provided' });
         }
-        const updatedCampaign = await Campaign.update(parseInt(campaignId as string, 10), updates);
+        const updatedCampaign = await Campaign.update(parseInt(campaignId as string, 10), req.user.userId, updates);
         if (!updatedCampaign) {
             res.status(404).send("No campaign found or update failed");
         } else {
@@ -69,9 +76,12 @@ export const updateCampaign = async (req: Request, res: Response) => {
 };
 
 export const deleteCampaign = async (req: Request, res: Response) => {
+    if (!req.user || !req.user.userId) {
+        return res.status(401).send("Unauthorized");
+    }
     const { campaignId } = req.params;
     try {
-        const deletedCount = await Campaign.delete(parseInt(campaignId as string, 10));
+        const deletedCount = await Campaign.delete(parseInt(campaignId as string, 10), req.user.userId);
         if (deletedCount && deletedCount > 0) {
             res.status(204).send("Campaign deleted successfully");
         } else {

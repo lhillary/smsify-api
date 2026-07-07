@@ -52,10 +52,10 @@ class Campaign {
      * @return {*}  {(Promise<ICampaign | null>)}
      * @memberof Campaign
      */
-    static async findById(campaignId: number): Promise<ICampaign | null> {
+    static async findById(campaignId: number, userId: number): Promise<ICampaign | null> {
         const result = await pool.query(
-            `SELECT * FROM campaigns WHERE campaign_id = $1;`,
-            [campaignId]
+            `SELECT * FROM campaigns WHERE campaign_id = $1 AND user_id = $2 AND deleted_at IS NULL;`,
+            [campaignId, userId]
         );
         return toCamelCase(result.rows[0]) as ICampaign;
     }
@@ -69,10 +69,10 @@ class Campaign {
      * @return {*}  {(Promise<ICampaign | null>)}
      * @memberof Campaign
      */
-    static async update(campaignId: number, updates: CampaignUpdates): Promise<ICampaign | null> {
+    static async update(campaignId: number, userId: number, updates: CampaignUpdates): Promise<ICampaign | null> {
         const setParts: string[] = [];
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const values: any[] = [campaignId]; 
+		const values: any[] = [campaignId, userId]; 
 		const fieldMappings: FieldMappings = {
 			name: 'name',
 			description: 'description',
@@ -89,7 +89,7 @@ class Campaign {
 		});
     
         if (setParts.length > 0) {
-			const queryString = `UPDATE campaigns SET ${setParts.join(', ')} WHERE campaign_id = $1 RETURNING *;`;
+			const queryString = `UPDATE campaigns SET ${setParts.join(', ')} WHERE campaign_id = $1 AND user_id = $2 AND deleted_at IS NULL RETURNING *;`;
 			try {
 				const result = await pool.query(queryString, values);
 				if (result.rows.length > 0) {
@@ -112,10 +112,10 @@ class Campaign {
      * @return {*}  {(Promise<number | null>)}
      * @memberof Campaign
      */
-    static async delete(campaignId: number): Promise<number | null> {
+    static async delete(campaignId: number, userId: number): Promise<number | null> {
         const result = await pool.query(
-            `UPDATE campaigns SET deleted_at = NOW() WHERE campaign_id = $1 AND deleted_at IS NULL;`,
-            [campaignId]
+            `UPDATE campaigns SET deleted_at = NOW(), status = 'inactive' WHERE campaign_id = $1 AND user_id = $2 AND deleted_at IS NULL;`,
+            [campaignId, userId]
         );
         return result.rowCount;
     }

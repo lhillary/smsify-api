@@ -34,11 +34,18 @@ class Categorization {
      * @return {*}  {Promise<ICampaignCategory[]>}
      * @memberof Categorization
      */
-    static async findByCampaign(campaignId: number): Promise<ICampaignCategory[]> {
-		console.log('', campaignId);
+    /**
+     * Pass userId to restrict to campaigns the user owns (API requests);
+     * omit it for internal use where there is no user context (webhooks).
+     */
+    static async findByCampaign(campaignId: number, userId?: number): Promise<ICampaignCategory[]> {
+        const ownershipClause = userId !== undefined
+            ? ` AND EXISTS (SELECT 1 FROM campaigns c WHERE c.campaign_id = campaign_categories.campaign_id AND c.user_id = $2)`
+            : '';
+        const params: number[] = userId !== undefined ? [campaignId, userId] : [campaignId];
         const result = await pool.query(
-            `SELECT * FROM campaign_categories WHERE campaign_id = $1 AND deleted_at IS NULL;`,
-            [campaignId]
+            `SELECT * FROM campaign_categories WHERE campaign_id = $1 AND deleted_at IS NULL${ownershipClause};`,
+            params
         );
         return toCamelCase(result.rows) as ICampaignCategory[];  
     }
@@ -52,11 +59,13 @@ class Categorization {
      * @return {*}  {Promise<ICampaignCategory>}
      * @memberof Categorization
      */
-    static async update(categoryId: number, newLabel: string): Promise<ICampaignCategory> {
+    static async update(categoryId: number, userId: number, newLabel: string): Promise<ICampaignCategory> {
         const result = await pool.query(
-            `UPDATE campaign_categories SET category_label = $2
-             WHERE category_id = $1 AND deleted_at IS NULL RETURNING *;`,
-            [categoryId, newLabel]
+            `UPDATE campaign_categories SET category_label = $3
+             WHERE category_id = $1 AND deleted_at IS NULL
+             AND EXISTS (SELECT 1 FROM campaigns c WHERE c.campaign_id = campaign_categories.campaign_id AND c.user_id = $2)
+             RETURNING *;`,
+            [categoryId, userId, newLabel]
         );
         return toCamelCase(result.rows[0]) as ICampaignCategory;
     }
@@ -69,11 +78,13 @@ class Categorization {
      * @return {*}  {Promise<ICampaignCategory>}
      * @memberof Categorization
      */
-    static async delete(categoryId: number): Promise<ICampaignCategory> {
+    static async delete(categoryId: number, userId: number): Promise<ICampaignCategory> {
         const result = await pool.query(
             `UPDATE campaign_categories SET deleted_at = NOW()
-             WHERE category_id = $1 AND deleted_at IS NULL RETURNING *;`,
-            [categoryId]
+             WHERE category_id = $1 AND deleted_at IS NULL
+             AND EXISTS (SELECT 1 FROM campaigns c WHERE c.campaign_id = campaign_categories.campaign_id AND c.user_id = $2)
+             RETURNING *;`,
+            [categoryId, userId]
         );
         return toCamelCase(result.rows[0]) as ICampaignCategory;
     }

@@ -1,5 +1,6 @@
 import PhoneNumber from '../models/PhoneNumber';
 import { twilioClientForUser } from '../config/twilio';
+import { syncUserPhoneNumbers } from '../helpers/syncPhoneNumbers';
 import { Request, Response } from "express";
 
 export const listAvailableNumbers = async (req: Request, res: Response) => {
@@ -52,6 +53,14 @@ export const getUserPhoneNumbers = async (req: Request, res: Response) => {
         return;
     }
     try {
+        // ?sync=true re-checks ownership against the connected Twilio account
+        if (req.query.sync === 'true' && req.user.connectedAccountSid) {
+            const synced = await syncUserPhoneNumbers(req.user);
+            if (synced) {
+                res.json(synced);
+                return;
+            }
+        }
         const phoneNumbers = await PhoneNumber.findByUserId(req.user.userId);
         res.json(phoneNumbers);
     } catch (err) {
@@ -80,8 +89,17 @@ export const deletePhoneNumber = async (req: Request, res: Response) => {
             return;
         }
 
-        // Release the phone number using Twilio's API
-        await twilioClient.incomingPhoneNumbers(phoneNumber.twilioSid).remove();
+        // Release via Twilio only if the connected account still owns it
+        // (is_active is maintained by the ownership sync); a number that's
+        // gone or owned elsewhere should still be removable from the app
+        if (phoneNumber.isActive) {
+            try {
+                await twilioClient.incomingPhoneNumbers(phoneNumber.twilioSid).remove();
+            } catch (twilioError) {
+                const status = (twilioError as { status?: number }).status;
+                if (status !== 404) throw twilioError;
+            }
+        }
 
         // Deactivate the phone number in the database
         const updatedPhoneNumber = await PhoneNumber.deactivate(parseInt(phoneNumberId as string, 10), userId);

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import User from '../models/User';
 import { clientForConnectedAccount } from '../config/twilio';
+import { syncUserPhoneNumbers } from '../helpers/syncPhoneNumbers';
 
 const ACCOUNT_SID_PATTERN = /^AC[0-9a-fA-F]{32}$/;
 
@@ -34,6 +35,15 @@ export const connectTwilioAccount = async (req: Request, res: Response) => {
         }
 
         const updatedUser = await User.setConnectedAccountSid(req.user.userId, accountSid);
+
+        // Reconcile stored numbers against what the connected account owns;
+        // a sync failure shouldn't undo a successful connection
+        try {
+            if (updatedUser) await syncUserPhoneNumbers(updatedUser);
+        } catch (syncError) {
+            console.error("Phone number sync after connect failed:", syncError);
+        }
+
         res.json({ message: 'Twilio account connected', connectedAccountSid: updatedUser?.connectedAccountSid });
     } catch (error) {
         console.error("Error connecting Twilio account:", error);

@@ -1,4 +1,5 @@
 import Contact from '../models/Contact';
+import Campaign from '../models/Campaign';
 import { Request, Response } from "express";
 
 export const createContact = async (req: Request, res: Response) => {
@@ -9,6 +10,14 @@ export const createContact = async (req: Request, res: Response) => {
     }
     const userId = req.user.userId;
     try {
+        // Contacts can only be attached to the user's own campaigns
+        if (campaignId != null) {
+            const campaign = await Campaign.findById(campaignId, userId);
+            if (!campaign) {
+                res.status(404).send("Campaign not found");
+                return;
+            }
+        }
         const contact = await Contact.create(userId, name, phoneNumber, campaignId);
         res.status(201).json(contact);
     } catch (error) {
@@ -33,9 +42,13 @@ export const getContacts = async (req: Request, res: Response) => {
 };
 
 export const getContactByCampaign = async (req: Request, res: Response) => {
+    if (!req.user || !req.user.userId) {
+        res.status(401).send("Unauthorized");
+        return;
+    }
     const { campaignId } = req.params;
     try {
-        const contacts = await Contact.findByCampaignId(parseInt(campaignId, 10));
+        const contacts = await Contact.findByCampaignId(parseInt(campaignId, 10), req.user.userId);
         res.json(contacts);
     } catch (error) {
         console.error(error);

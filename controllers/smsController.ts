@@ -5,6 +5,8 @@ import ResponseModel from "../models/Response";
 import Categorization from "../models/Categorization";
 import ResponseCategorization from "../models/ResponseCategorization";
 import Contact from '../models/Contact';
+import PhoneNumber from '../models/PhoneNumber';
+import Campaign from '../models/Campaign';
 import categorizeResponse from "../helpers/categorizeResponse";
 import { ICampaignCategory } from "types/interfaces";
 
@@ -20,7 +22,15 @@ export const sendBulkSMS = async (req: Request, res: Response): Promise<void> =>
         return;
     }
     try {
-        const contacts = await Contact.findByCampaignId(campaignId);  // Retrieve contacts for the campaign
+        // Only allow sending from an active number this user owns, so stale
+        // or foreign From numbers fail here instead of at the Twilio API
+        const fromNumber = await PhoneNumber.findActiveByNumber(req.user.userId, twilioNumber);
+        if (!fromNumber) {
+            res.status(400).json({ message: 'twilioNumber is not an active phone number on your account' });
+            return;
+        }
+
+        const contacts = await Contact.findByCampaignId(campaignId, req.user.userId);  // Retrieve the user's contacts for the campaign
 
         const messagePromises = contacts.map(contact => {
             return twilioClient.messages.create({
@@ -115,9 +125,18 @@ export const getResponsesByCampaign = async (req: Request, res: Response): Promi
 };
 
 export const getMessagesByCampaign = async (req: Request, res: Response): Promise<void> => {
+    if (!req.user || !req.user.userId) {
+        res.status(401).send("Unauthorized");
+        return;
+    }
     const { campaignId } = req.params;
 
     try {
+        const campaign = await Campaign.findById(parseInt(campaignId), req.user.userId);
+        if (!campaign) {
+            res.status(404).send("Campaign not found");
+            return;
+        }
         const messages = await Message.findByCampaignId(parseInt(campaignId));
 		res.json(messages);
     } catch (error) {
