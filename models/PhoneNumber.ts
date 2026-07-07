@@ -76,6 +76,23 @@ class PhoneNumber {
     }
 
     /**
+     * Ensures a live row exists for a number the user's connected Twilio
+     * account owns: revives any existing row for that number (clearing
+     * deleted_at), or inserts a fresh one. Idempotent.
+     */
+    static async restoreOrCreate(userId: number, phoneNumber: string, country: string, twilioSid: string): Promise<IPhoneNumber> {
+        const restored = await pool.query(
+            `UPDATE phone_numbers SET deleted_at = NULL, is_active = true
+             WHERE user_id = $1 AND twilio_sid = $2 RETURNING *;`,
+            [userId, twilioSid]
+        );
+        if (restored.rows.length > 0) {
+            return toCamelCase(restored.rows[0]) as IPhoneNumber;
+        }
+        return PhoneNumber.create(userId, phoneNumber, country, twilioSid);
+    }
+
+    /**
      * Reconciles a user's rows with the numbers their connected Twilio
      * account actually owns: rows whose twilio_sid is in the list become
      * active, the rest become inactive. Soft-deleted rows are untouched,
