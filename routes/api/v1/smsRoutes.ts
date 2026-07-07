@@ -1,6 +1,7 @@
 import express from 'express';
 import passport from 'passport';
-//import { validateTwilioRequest } from '../../../middlewares/twilioValidation';
+import { validateTwilioRequest } from '../../../middlewares/twilioValidation';
+import { canUseTwilio } from '../../../middlewares/authRoleChecker';
 import { handleMessageStatus, receiveSMS, sendBulkSMS, getResponsesByCampaign, getMessagesByCampaign } from '../../../controllers/smsController';
 
 const router = express.Router();
@@ -39,7 +40,7 @@ const router = express.Router();
  *      500:
  *        description: Error sending SMS
  */
-router.post('/sendBulk', passport.authenticate('jwt', { session: false }), sendBulkSMS);
+router.post('/sendBulk', passport.authenticate('jwt', { session: false }), canUseTwilio, sendBulkSMS);
 
 /**
  * @swagger
@@ -68,7 +69,8 @@ router.post('/sendBulk', passport.authenticate('jwt', { session: false }), sendB
  *      500:
  *        description: Error processing received SMS
  */
-router.post('/receive', passport.authenticate('jwt', { session: false }), receiveSMS);
+// Twilio webhooks authenticate via request signature, not JWT
+router.post('/receive', validateTwilioRequest, receiveSMS);
 
 /**
  * @swagger
@@ -95,7 +97,7 @@ router.post('/receive', passport.authenticate('jwt', { session: false }), receiv
  *      500:
  *        description: Failed to update status
  */
-router.post('/status', passport.authenticate('jwt', { session: false }), handleMessageStatus);
+router.post('/status', validateTwilioRequest, handleMessageStatus);
 
 /**
  * @swagger

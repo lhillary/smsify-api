@@ -1,9 +1,16 @@
 import PhoneNumber from '../models/PhoneNumber';
-import twilioClient from '../config/twilio';
+import { twilioClientForUser } from '../config/twilio';
 import { Request, Response } from "express";
 
 export const listAvailableNumbers = async (req: Request, res: Response) => {
 	const searchTerm = req.query.searchTerm as string;
+    if (!req.user) {
+        return res.status(401).send("Unauthorized");
+    }
+    const twilioClient = twilioClientForUser(req.user);
+    if (!twilioClient) {
+        return res.status(403).json({ message: 'Connect your Twilio account to use SMS features' });
+    }
     try {
         const availableNumbers = await twilioClient.availablePhoneNumbers('US').local.list({contains: searchTerm, smsEnabled: true, limit: 25});
         res.json(availableNumbers);
@@ -19,6 +26,10 @@ export const purchasePhoneNumber = async (req: Request, res: Response) => {
         return;
     }
     const { phoneNumber, country } = req.body;  // Ensure country is provided or set a default
+    const twilioClient = twilioClientForUser(req.user);
+    if (!twilioClient) {
+        return res.status(403).json({ message: 'Connect your Twilio account to use SMS features' });
+    }
     try {
         // Create the phone number in Twilio
         const purchasedNumber = await twilioClient.incomingPhoneNumbers.create({
@@ -56,6 +67,10 @@ export const deletePhoneNumber = async (req: Request, res: Response) => {
     }
     const { phoneNumberId } = req.params;
     const userId = req.user.userId;
+    const twilioClient = twilioClientForUser(req.user);
+    if (!twilioClient) {
+        return res.status(403).json({ message: 'Connect your Twilio account to use SMS features' });
+    }
 
     try {
         // Find the phone number in the database

@@ -84,7 +84,7 @@ class User {
 	
 		const fieldMappings: FieldMappings = {
 			username: 'username',
-			email: 'phone_number',
+			email: 'email',
 			passwordHash: 'password_hash',
 			tierId: 'tier_id',
 		};
@@ -110,6 +110,38 @@ class User {
 			}
         }
         return null;
+    }
+
+    /**
+     * Stores (or clears, with null) the Twilio Account SID the user
+     * authorized through our Twilio Connect App.
+     */
+    static async setConnectedAccountSid(userId: number, accountSid: string | null): Promise<IUser | null> {
+        const result = await pool.query(
+            `UPDATE users SET connected_account_sid = $2 WHERE user_id = $1 AND deleted_at IS NULL RETURNING *;`,
+            [userId, accountSid]
+        );
+        return result.rows.length > 0 ? (toCamelCase(result.rows[0]) as IUser) : null;
+    }
+
+    static async findByConnectedAccountSid(accountSid: string): Promise<IUser | null> {
+        const result = await pool.query(
+            `SELECT * FROM users WHERE connected_account_sid = $1 AND deleted_at IS NULL;`,
+            [accountSid]
+        );
+        return result.rows.length > 0 ? (toCamelCase(result.rows[0]) as IUser) : null;
+    }
+
+    /**
+     * Clears the connected account wherever it appears; used by the
+     * Twilio Connect deauthorize webhook. Returns affected row count.
+     */
+    static async clearConnectedAccountSid(accountSid: string): Promise<number | null> {
+        const result = await pool.query(
+            `UPDATE users SET connected_account_sid = NULL WHERE connected_account_sid = $1;`,
+            [accountSid]
+        );
+        return result.rowCount;
     }
 
     /**

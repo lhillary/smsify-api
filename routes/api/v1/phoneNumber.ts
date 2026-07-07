@@ -2,6 +2,7 @@ import express from "express";
 const router = express.Router();
 import { deletePhoneNumber, getUserPhoneNumbers, listAvailableNumbers, purchasePhoneNumber } from "../../../controllers/phoneNumberController";
 import passport from "passport";
+import { canUseTwilio } from "../../../middlewares/authRoleChecker";
 
 /**
  * @swagger
@@ -73,7 +74,7 @@ router.get('/available-numbers', passport.authenticate('jwt', { session: false }
  *      500:
  *        description: Failed to purchase phone number
  */
-router.post('/purchase-number', passport.authenticate('jwt', { session: false }), purchasePhoneNumber);
+router.post('/purchase-number', passport.authenticate('jwt', { session: false }), canUseTwilio, purchasePhoneNumber);
 
 /**
  * @swagger
@@ -123,6 +124,6 @@ router.get('/user-numbers', passport.authenticate('jwt', { session: false }), ge
  *      500:
  *        description: Failed to deactivate phone number
  */
-router.put('/delete/:phoneNumberId', passport.authenticate('jwt', { session: false }), deletePhoneNumber);
+router.put('/delete/:phoneNumberId', passport.authenticate('jwt', { session: false }), canUseTwilio, deletePhoneNumber);
 
 export default router;

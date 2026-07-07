@@ -27,12 +27,15 @@ import campaignV1Routes from "./routes/api/v1/campaign";
 import smsV1Routes from "./routes/api/v1/smsRoutes";
 import subscriptionTierV1Routes from "./routes/api/v1/subscriptionTier";
 import categorizationV1Routes from "./routes/api/v1/categorization";
+import twilioConnectV1Routes from "./routes/api/v1/twilioConnect";
 
 // Middlewares
 app.use(cors({
 	exposedHeaders: ['Authorization', 'Content-Type'],
 }));
 app.use(bodyParser.json());
+// Twilio webhooks POST form-encoded bodies; needed for signature validation
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
 
 // Use routes V1
@@ -43,6 +46,7 @@ app.use('/api/v1/campaign', campaignV1Routes);
 app.use('/api/v1/sms', smsV1Routes);
 app.use('/api/v1/subscription', subscriptionTierV1Routes);
 app.use('/api/v1/category', categorizationV1Routes);
+app.use('/api/v1/twilio-connect', twilioConnectV1Routes);
 
 // Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

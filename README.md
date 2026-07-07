@@ -15,6 +15,9 @@ All endpoints are versioned under `/api/v1`:
 - `/sms` — send bulk SMS, receive replies, and track delivery status
 - `/category` — define categories for classifying responses
 - `/subscription` — subscription tiers
+- `/twilio-connect` — link/unlink a user's own Twilio account (via Twilio Connect)
+
+Users authorize the app through a [Twilio Connect](https://www.twilio.com/docs/iam/connect) App, so numbers they buy and messages they send bill to their own Twilio account. Every user, including admins, must connect a Twilio account before using SMS features.
 
 ## Local development
 
@@ -25,6 +28,8 @@ cp .env.example .env   # then fill in values
 npm install
 npm run dev
 ```
+
+Apply any SQL files in `migrations/` to your database (locally via `psql`, on Heroku via `heroku pg:psql`).
 
 ## Deployment
 

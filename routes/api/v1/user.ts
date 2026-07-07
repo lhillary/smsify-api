@@ -2,6 +2,7 @@ import express from "express";
 const router = express.Router();
 import passport from "passport";
 import { registerUser, loginUser, updateUser, deleteUser, getUser } from "../../../controllers/userController";
+import { registrationAllowed } from "../../../middlewares/authRoleChecker";
 
 /**
  * @swagger
@@ -43,7 +44,7 @@ import { registerUser, loginUser, updateUser, deleteUser, getUser } from "../../
  *      500:
  *        description: Server error
  */
-router.post('/register', registerUser);
+router.post('/register', registrationAllowed, registerUser);
 
 /**
  * @swagger
@@ -143,7 +144,7 @@ router.post('/login', loginUser);
  *      500:
  *        description: Server error
  */
-router.post('/:userId', getUser);
+router.post('/:userId', passport.authenticate('jwt', { session: false }), getUser);
 
 /**
  * @swagger

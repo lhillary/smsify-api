@@ -8,6 +8,8 @@ export interface IUser {
     deletedAt?: Date;
     tierId: number;
     role: string;
+    /** Twilio Account SID authorized via our Connect App, if any */
+    connectedAccountSid?: string | null;
 }
 
 export interface IPhoneNumber {

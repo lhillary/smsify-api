@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import twilioClient from '../config/twilio';
+import { twilioClientForUser } from '../config/twilio';
 import Message from "../models/Message";
 import ResponseModel from "../models/Response";
 import Categorization from "../models/Categorization";
@@ -10,6 +10,15 @@ import { ICampaignCategory } from "types/interfaces";
 
 export const sendBulkSMS = async (req: Request, res: Response): Promise<void> => {
     const { campaignId, messageContent, twilioNumber } = req.body;
+    if (!req.user) {
+        res.status(401).send("Unauthorized");
+        return;
+    }
+    const twilioClient = twilioClientForUser(req.user);
+    if (!twilioClient) {
+        res.status(403).json({ message: 'Connect your Twilio account to use SMS features' });
+        return;
+    }
     try {
         const contacts = await Contact.findByCampaignId(campaignId);  // Retrieve contacts for the campaign
 

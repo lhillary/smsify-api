@@ -41,6 +41,7 @@ export const loginUser = (req: Request, res: Response) => {
             email: user.email,
             role: user.role,
 			tierId: user.tierId,
+            connectedAccountSid: user.connectedAccountSid ?? null,
         };
         res.json({ message: 'Logged in successfully', token, user: userForClient });
     })(req, res);
